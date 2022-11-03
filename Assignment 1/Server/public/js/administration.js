@@ -24,11 +24,9 @@ function loadUsers(){
 
 }
 
-
-var myModal = document.getElementById('staticBackdrop');
-var modal = bootstrap.Modal.getOrCreateInstance(myModal)
-
 function showModal(userid){
+    var myModal = document.getElementById('staticBackdrop');
+    var modal = bootstrap.Modal.getOrCreateInstance(myModal)
     fetch(`http://127.0.0.1:3000/user/info/${userid}`)
     .then((response) => response.json())
     .then((data) => {

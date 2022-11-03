@@ -43,6 +43,7 @@ app.use('/oops', require('./routes/oops'));
 app.use('/products', require('./routes/products'));
 app.use('/administration', require('./routes/administration'));
 app.use('/cart', require('./routes/cart'));
+app.use('/seller', require('./routes/seller'));
 
 app.get('/', (req,res) => {
     res.redirect('/login');

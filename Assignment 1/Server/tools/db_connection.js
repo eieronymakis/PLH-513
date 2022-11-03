@@ -8,7 +8,8 @@ let con = mysql.createConnection({
     user: "root",
     password: "1111",
     database: "cloud_db",
-	charset : 'utf8'
+	charset : 'utf8',
+    dateStrings: true
 });
 
 con.connect(function(err){
