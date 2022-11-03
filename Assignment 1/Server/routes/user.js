@@ -1,4 +1,3 @@
-const e = require('express');
 const express = require('express');
 const router = express.Router();
 const connection = require('../tools/db_connection');
@@ -53,12 +52,23 @@ router
     })
 
 router
-    .route('confirm')
+    .route('/confirm')
     .post(async (req,res) => {
         if(req.session.isAuthenticated && req.session.role=='Admin'){
             let query = `UPDATE Users SET confirmed = 1 WHERE id = ${req.body.id};`;
             let result = await connection.executeQuery(query);
-            console.log(result);
+            res.status(200).end();
+        }else{
+            res.status(401).end();
+        }
+    })
+
+router
+    .route('/delete')
+    .post(async (req,res) => {
+        if(req.session.isAuthenticated && req.session.role=='Admin'){
+            let query = `DELETE FROM Users WHERE id = ${req.body.id};`;
+            let result = await connection.executeQuery(query);
             res.status(200).end();
         }else{
             res.status(401).end();

@@ -1,24 +1,28 @@
 let table = document.getElementById('tablebody');
 
-fetch('http://127.0.0.1:3000/user/all')
-  .then((response) => response.json())
-  .then((data) => {
-    for(let i = 0; i < data.length; i++){
-        table.innerHTML+=
-        `<tr>
-            <th scope="row">${data[i].id}</th>
-            <td>${data[i].name}</td>
-            <td>${data[i].surname}</td>
-            <td>${data[i].username}</td>
-            <td>${data[i].email}</td>
-            <td>${data[i].role}</td>
-            <td>${data[i].confirmed}</td>
-            <td><button class="btn btn-success" onclick=showModal(${data[i].id})>Change</button></td>
-            <td><button class="btn btn-danger">Delete</button></td>
-            ${data[i].confirmed == 0 ? `<td><button class="btn btn-primary" onclick="confirmUser(${data[i].id})">Confirm</button></td>` : "<td></td>"}
-        </tr>`
-    }
-});
+function loadUsers(){
+    fetch('http://127.0.0.1:3000/user/all')
+    .then((response) => response.json())
+    .then((data) => {
+        table.innerHTML = '';
+        for(let i = 0; i < data.length; i++){
+            table.innerHTML+=
+            `<tr>
+                <th scope="row">${data[i].id}</th>
+                <td>${data[i].name}</td>
+                <td>${data[i].surname}</td>
+                <td>${data[i].username}</td>
+                <td>${data[i].email}</td>
+                <td>${data[i].role}</td>
+                <td>${data[i].confirmed}</td>
+                <td><button class="btn btn-success" onclick=showModal(${data[i].id})>Change</button></td>
+                <td><button class="btn btn-danger" onclick=deleteUser(${data[i].id})>Delete</button></td>
+                ${data[i].confirmed == 0 ? `<td><button class="btn btn-primary" onclick="confirmUser(${data[i].id})">Confirm</button></td>` : "<td></td>"}
+            </tr>`
+        }
+    });
+
+}
 
 
 var myModal = document.getElementById('staticBackdrop');
@@ -39,27 +43,42 @@ function showModal(userid){
     });
 }
 
-function confirmUser(id){
-    const data = {
-        id: id
-    }
-    fetch(`http://127.0.0.1:3000/user/cofirm`,{
-        method: 'POST',
-        headers:{
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log('Success: ',data);
+function confirmUser(userID){
+    const data = { 
+        id:userID 
+    };
+    fetch(`http://127.0.0.1:3000/user/confirm`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
     })
     .catch((error) => {
-        console.log('Error: ',error);
+        console.error('Error:', error);
     });
+    loadUsers();
 }
 
-function updateUserData(userid,username){
+function deleteUser(userID){
+    const data = { 
+        id:userID 
+    };
+    fetch(`http://127.0.0.1:3000/user/delete`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+    loadUsers();
+}
+
+
+function updateUser(){
     const data = { 
         id: document.getElementById('modal_id').value,
         name: document.getElementById('modal_name').value,
@@ -76,10 +95,6 @@ function updateUserData(userid,username){
         'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log('Success:', data);
     })
     .catch((error) => {
         console.error('Error:', error);

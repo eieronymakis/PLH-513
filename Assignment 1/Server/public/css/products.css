@@ -210,3 +210,40 @@ input{
     background: rgb(24, 26, 27) !important;
     color: white !important;
 }
+
+.product-photo-container{
+    height: 200px !important;
+    width: 200px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-photo-container img{
+    max-width: 200px !important;
+    max-height: 200px !important;
+}
+
+.btn-lg{
+    border-color: white !important;
+}
+
+.button-container{
+    width: 100%;
+    height: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-container .btn{
+    font-size: 1.5rem;
+    font-weight: bolder;
+    width: 15rem;
+    height: 4rem;
+}
+
+#product_container{
+    padding-top: 0!important;
+}
+
