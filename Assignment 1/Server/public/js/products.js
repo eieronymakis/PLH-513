@@ -46,7 +46,7 @@ function loadProducts(){
                     <h6 class="text-success"></h6>
                     <div class="d-flex flex-column mt-4">
                         <button class="btn btn-primary btn-lg" type="button">Details</button>
-                        <button class="btn text-light  bg-success btn-lg mt-2" type="button">
+                        <button onclick="addToCart(${data[i].id})" class="btn text-light  bg-success btn-lg mt-2" type="button">
                             Add to Cart
                         </button>
                     </div>
@@ -56,5 +56,21 @@ function loadProducts(){
             </div>
         </div>`
     }
+    });
+}
+
+function addToCart(id){
+    const data = {
+        pid: id
+    };
+    fetch(`http://127.0.0.1:3000/products/addtocart`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+    })
+    .catch((error) => {
+        console.error('Error:', error);
     });
 }

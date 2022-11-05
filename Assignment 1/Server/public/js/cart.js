@@ -3,7 +3,7 @@ let p_container = document.getElementById('product_container');
 let cart_count = document.getElementById('cart_item_count');
 let cart_cost = document.getElementById('total_cost');
 function loadCart(){
-    fetch('http://127.0.0.1:3000/products/all')
+    fetch('http://127.0.0.1:3000/cart/items')
     .then((response) => response.json())
     .then((data) => {
         p_container.innerHTML = '';
@@ -38,8 +38,13 @@ function loadCart(){
                         </div>
                         <div class="col-md-2 d-flex justify-content-center">
                             <div>
-                            <p class="small text-muted text-light mb-4 pb-2">Total</p>
-                            <p class="lead fw-normal text-light mb-0">$${data[i].price}</p>
+                            <p class="small text-muted text-light mb-4 pb-2">Insertion Date</p>
+                            <p class="lead fw-normal text-light mb-0">${data[i].insertiondate}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <div>
+                                <button onclick="removeItem(${data[i].cid})" type="button" class="btn btn-lg text-light" style="background:transparent !important; border: 1px solid white;">Remove</button>
                             </div>
                         </div>
                     </div>
@@ -48,4 +53,17 @@ function loadCart(){
         }
         cart_cost.innerHTML = `$${cost.toFixed(2)}`;
     });
+}
+
+function removeItem(id){
+    fetch(`http://127.0.0.1:3000/cart/items/${id}/remove`, {
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+    loadCart();
 }

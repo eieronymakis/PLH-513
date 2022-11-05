@@ -58,17 +58,38 @@
             </div>
         </div>
     </div>
-    <section style="background-color: transparent; overflow-y: scroll;">
-        <div id="product_container" class="container py-5">
-        </div>
-    </section>
+    <div class="container w-100 mt-5" style="height:50px !important; display: flex; align-items: center; justify-content: center;">
+        <div class="display-1 text-light fw-bold">Seller Products</div>    
+    </div>
+    <div class="container w-100 mt-5" style="height:50px !important; display: flex; align-items: center; justify-content: center;">    
+        <button type="button" onclick="showModal2()"class="btn btn-lg btn-primary add-btn" style="margin-right:auto; margin-left:auto;">Add Product</button>
+    </div>
+    <div class="table_container mt-5">
+        <table class="table-hover table table-bordered table-striped table-dark">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Product Code</th>
+                <th scope="col">Price</th>
+                <th scope="col">Date of Withdrawl</th>
+                <th scope="col">Category</th>
+                <th scope="col">Product Photo</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody id="tablebody">
+            </tbody>
+        </table>
+    </div>
 
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" id="waitDialog">
         <div class="modal-content bg-dark">
             <div class="modal-header text-light">
             <h5 class="modal-title" id="staticBackdropLabel">Make changes</h5>
-            <button onclick="loadProducts()" style="background-color:white" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button style="background-color:white" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-light">
                 <div class="modal-row">
@@ -89,48 +110,121 @@
                 </div>  
                 <div class="modal-row mt-2">
                     <div class="left">
-                        Surname
+                        Product Code
                     </div>
                     <div class="right">
-                        <input id="modal_surname" type="text"/>
+                        <input id="modal_pcode" type="text"/>
                     </div>
                 </div>
                 <div class="modal-row mt-2">
                     <div class="left">
-                        Username
+                        Price
                     </div>
                     <div class="right">
-                        <input id="modal_username" type="text" readonly/>
+                        <input id="modal_price" type="text"/>
                     </div>
                 </div>
                 <div class="modal-row mt-2">
                     <div class="left">
-                        Email
+                        Date of Withdrawl
                     </div>
                     <div class="right">
-                        <input id="modal_email" type="text"/>
+                        <input id="modal_dow" type="text"/>
                     </div>
                 </div>
                 <div class="modal-row mt-2">
                     <div class="left">
-                        Role
+                        Seller Name
                     </div>
                     <div class="right">
-                        <input id="modal_role" type="text"/>
+                        <input id="modal_sname" type="text" readonly/>
                     </div>
                 </div>
                 <div class="modal-row mt-2">
                     <div class="left">
-                        Confirmed
+                        Category
                     </div>
                     <div class="right">
-                        <input id="modal_confirmed" type="text"/>
+                        <input id="modal_category" type="text"/>
+                    </div>
+                </div>
+                <div class="modal-row mt-2">
+                    <div class="left">
+                        Product Photo
+                    </div>
+                    <div class="right">
+                        <input id="modal_pphoto" type="text"/>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="loadProduct()">Close</button>
-            <button type="button" class="btn btn-primary" onclick="updateProduct()">Save Changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="updateProduct();loadProducts();">Save Changes</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdrop2Label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" id="waitDialog">
+        <div class="modal-content bg-dark">
+            <div class="modal-header text-light">
+            <h5 class="modal-title" id="staticBackdropLabel">Make changes</h5>
+            <button style="background-color:white" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-light">
+                <div class="modal-row mt-2">
+                    <div class="left">
+                        Name
+                    </div>
+                    <div class="right">
+                        <input id="modal2_name" type="text"/>
+                    </div>
+                </div>  
+                <div class="modal-row mt-2">
+                    <div class="left">
+                        Product Code
+                    </div>
+                    <div class="right">
+                        <input id="modal2_pcode" type="text"/>
+                    </div>
+                </div>
+                <div class="modal-row mt-2">
+                    <div class="left">
+                        Price
+                    </div>
+                    <div class="right">
+                        <input id="modal2_price" type="text"/>
+                    </div>
+                </div>
+                <div class="modal-row mt-2">
+                    <div class="left">
+                        Date of Withdrawl
+                    </div>
+                    <div class="right">
+                        <input id="modal2_dow" type="text"/>
+                    </div>
+                </div>
+                <div class="modal-row mt-2">
+                    <div class="left">
+                        Category
+                    </div>
+                    <div class="right">
+                        <input id="modal2_category" type="text"/>
+                    </div>
+                </div>
+                <div class="modal-row mt-2">
+                    <div class="left">
+                        Product Photo
+                    </div>
+                    <div class="right">
+                        <input id="modal2_pphoto" type="text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="addProduct();loadProducts();">Save Changes</button>
             </div>
         </div>
         </div>

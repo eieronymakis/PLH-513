@@ -1,5 +1,6 @@
 const e = require('express');
 const express = require('express');
+const { executeQuery } = require('../tools/db_connection');
 const router = express.Router();
 const connection = require('../tools/db_connection');
 
@@ -33,7 +34,7 @@ router
             let result = await connection.executeQuery(query);
             let username  = result[0].username;
             query = `INSERT INTO Products(name, pcode, price,dateofwithdrawl, sellername, category, pphoto)
-                    VALUES('${req.body.name}','${req.body.pcode}',${req.body.price},'${req.body.date}','${username}','${req.body.category}','${req.body.pphoto}')`;
+                    VALUES('${req.body.name}','${req.body.pcode}',${req.body.price},'${req.body.dow}','${username}','${req.body.category}','${req.body.pphoto}')`;
             result = await connection.executeQuery(query);
             res.status(200).end();
         }else{
@@ -42,10 +43,10 @@ router
     })
 
 router
-    .route('/products/delete')
-    .post(async (req,res) =>{
+    .route('/products/:pid/delete')
+    .delete(async (req,res) =>{
         if(req.session.isAuthenticated){
-            let query = `DELETE FROM Products WHERE id = ${req.body.id}`;
+            let query = `DELETE FROM Products WHERE id = ${req.params.pid}`;
             let result = await connection.executeQuery(query);
             res.status(200).end();
         }else{
@@ -53,11 +54,25 @@ router
         }
     })
 
+
 router
-    .route('/products/update')
-    .post(async (req,res) => {
+    .route('/products/:pid/info')
+    .get(async (req,res) => {
         if(req.session.isAuthenticated){
-            let query = `UPDATE Products SET name = "${req.body.name}", pcode = "${req.body.pcode}", price=${req.body.price}, dateofwithdrawl="${req.body.date}", category="${req.body.category}", pphoto="${req.body.pphoto}" WHERE id = ${req.body.id}`;
+            let query =  `SELECT Products.* FROM Products INNER JOIN Users ON Products.sellername = Users.username AND Users.id = ${req.session.uid} AND Products.id = ${req.params.pid}`;
+            let result = await connection.executeQuery(query);
+            res.send(result).status(200).end();
+        }else{
+            res.status(401).end();
+        }
+    })
+
+router
+    .route('/products/:pid/update')
+    .post(async (req,res) =>{
+        console.log('test');
+        if(req.session.isAuthenticated){
+            let query = `UPDATE Products SET name = '${req.body.name}', pcode = '${req.body.pcode}', price = ${req.body.price}, dateofwithdrawl = '${req.body.dow}', category = '${req.body.category}', pphoto = '${req.body.pphoto}' WHERE sellername = '${req.body.sname}' AND id = ${req.params.pid}`;
             let result = await connection.executeQuery(query);
             res.status(200).end();
         }else{
