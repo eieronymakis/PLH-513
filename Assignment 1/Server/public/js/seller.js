@@ -1,3 +1,9 @@
+fetch('http://127.0.0.1:3000/user/info')
+  .then((response) => response.json())
+  .then((data) => {
+    document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
+  });
+  
 function loadProducts(){
     let table = document.getElementById('tablebody');
     fetch('http://127.0.0.1:3000/seller/products')
@@ -15,7 +21,7 @@ function loadProducts(){
                 <td>${data[i].category}</td>
                 <td>${data[i].pphoto}</td>
                 <td><button class="btn btn-success" onclick=showModal(${data[i].id})>Change</button></td>
-                <td><button class="btn btn-danger" onclick=deleteProduct(${data[i].id})>Delete</button></td>
+                <td><button class="btn btn-danger" onclick=removeItem(${data[i].id})>Delete</button></td>
             </tr>`
         }
     });
@@ -32,6 +38,8 @@ function removeItem(pid){
         console.error('Error:', error);
     });
     loadProducts();
+    $("#alert3").hide().show('medium');
+    setTimeout(function(){$("#alert3").hide()},2000)
 }
 
 
@@ -81,6 +89,8 @@ function updateProduct(){
     .catch((error) => {
         console.error('Error:', error);
     });
+    $("#alert1").hide().show('medium');
+    setTimeout(function(){$("#alert1").hide()},2000)
 }
 
 function addProduct(){
@@ -102,4 +112,6 @@ function addProduct(){
     .catch((error) => {
         console.error('Error:', error);
     });
+    $("#alert4").hide().show('medium');
+    setTimeout(function(){$("#alert4").hide()},2000)
 }

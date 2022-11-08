@@ -28,8 +28,8 @@ CREATE TABLE Carts (
     pid int NOT NULL,
     insertiondate datetime NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (uid) REFERENCES Users (id),
-    FOREIGN KEY (pid) REFERENCES Products(id)
+    FOREIGN KEY (uid) REFERENCES Users (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (pid) REFERENCES Products(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 Insert into Users(name,surname,username,password,email,role,confirmed) 

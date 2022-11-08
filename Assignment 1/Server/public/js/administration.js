@@ -1,6 +1,11 @@
-let table = document.getElementById('tablebody');
+fetch('http://127.0.0.1:3000/user/info')
+  .then((response) => response.json())
+  .then((data) => {
+    document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
+  });
 
 function loadUsers(){
+    let table = document.getElementById('tablebody');
     fetch('http://127.0.0.1:3000/user/all')
     .then((response) => response.json())
     .then((data) => {
@@ -73,8 +78,9 @@ function deleteUser(userID){
         console.error('Error:', error);
     });
     loadUsers();
+    $("#alert3").hide().show('medium');
+    setTimeout(function(){$("#alert3").hide()},2000)
 }
-
 
 function updateUser(){
     const data = { 
@@ -95,6 +101,9 @@ function updateUser(){
     body: JSON.stringify(data),
     })
     .catch((error) => {
-        console.error('Error:', error);
+        $("#alert2").hide().show('medium');
+        return;
     });
+    $("#alert1").hide().show('medium');
+    setTimeout(function(){$("#alert1").hide()},2000)
 }

@@ -8,7 +8,11 @@ router
     .route('/')
     .get(async (req,res) => {
         if(req.session.isAuthenticated){
-            res.render('seller');
+            if(req.session.role == 'ProductSeller'){
+                res.render('seller');
+            }else{
+                res.redirect('/forbidden')
+            }
         }else{
             res.redirect('/login');
         }
@@ -17,7 +21,7 @@ router
 router
     .route('/products')
     .get(async (req,res) => {
-        if(req.session.isAuthenticated){
+        if(req.session.isAuthenticated && req.session.role == 'ProductSeller'){
             let query = `SELECT Products.* FROM Products INNER JOIN Users ON Products.sellername = Users.username AND Users.id = ${req.session.uid}`;
             let result = await connection.executeQuery(query);
             res.send(result);
@@ -29,7 +33,7 @@ router
 router
     .route('/products/add')
     .post(async (req,res) =>{
-        if(req.session.isAuthenticated){
+        if(req.session.isAuthenticated && req.session.role == 'ProductSeller'){
             let query = `SELECT username FROM Users WHERE id = ${req.session.uid}`;
             let result = await connection.executeQuery(query);
             let username  = result[0].username;
@@ -45,7 +49,7 @@ router
 router
     .route('/products/:pid/delete')
     .delete(async (req,res) =>{
-        if(req.session.isAuthenticated){
+        if(req.session.isAuthenticated && req.session.role == 'ProductSeller'){
             let query = `DELETE FROM Products WHERE id = ${req.params.pid}`;
             let result = await connection.executeQuery(query);
             res.status(200).end();
@@ -58,7 +62,7 @@ router
 router
     .route('/products/:pid/info')
     .get(async (req,res) => {
-        if(req.session.isAuthenticated){
+        if(req.session.isAuthenticated && req.session.role == 'ProductSeller'){
             let query =  `SELECT Products.* FROM Products INNER JOIN Users ON Products.sellername = Users.username AND Users.id = ${req.session.uid} AND Products.id = ${req.params.pid}`;
             let result = await connection.executeQuery(query);
             res.send(result).status(200).end();
@@ -70,9 +74,8 @@ router
 router
     .route('/products/:pid/update')
     .post(async (req,res) =>{
-        console.log('test');
-        if(req.session.isAuthenticated){
-            let query = `UPDATE Products SET name = '${req.body.name}', pcode = '${req.body.pcode}', price = ${req.body.price}, dateofwithdrawl = '${req.body.dow}', category = '${req.body.category}', pphoto = '${req.body.pphoto}' WHERE sellername = '${req.body.sname}' AND id = ${req.params.pid}`;
+        if(req.session.isAuthenticated && req.session.role == 'ProductSeller'){
+            let query = `UPDATE Products SET name = "${req.body.name}", pcode = "${req.body.pcode}", price = ${req.body.price}, dateofwithdrawl = "${req.body.dow}", category = "${req.body.category}", pphoto = "${req.body.pphoto}" WHERE sellername = "${req.body.sname}" AND id = ${req.params.pid}`;
             let result = await connection.executeQuery(query);
             res.status(200).end();
         }else{
