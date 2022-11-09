@@ -1,0 +1,31 @@
+version: '2.1'
+
+services:
+ mysql:
+  image: mysql:latest
+  container_name: mysql-container
+  ports:
+   - 5002:3306
+  volumes:
+   - ./server/db_backup/cloud_db_1.sql:/docker-entrypoint-initdb.d/cloud_db_1.sql
+  environment:
+   MYSQL_DATABASE: 'cloud_db'
+   MYSQL_ROOT_PASSWORD: '1111'
+  restart: always
+  healthcheck:
+   test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+   interval: 20s
+   timeout: 10s
+   retries: 10
+
+ server:
+  depends_on: 
+   mysql:
+    condition: service_healthy
+  links:
+   - mysql
+  container_name: node-server
+  build: ./server
+  ports:
+   - 3000:3000
+  restart: always
