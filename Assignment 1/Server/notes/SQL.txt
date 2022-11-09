@@ -37,3 +37,6 @@ values('test','test','test','123123','m@m.com','User',0);
 
 
 Insert into Products(name,pcode,price,dateofwithdrawl,sellername,category,pphoto) values("HuaKastro 14 FT Inflatable Movie Screen Indoor Outdoor 104'' Projector Screen",'B0957GH8VV',91.79,'2022-12-31 23:59:59','manosier','Television & Video','/img/products/projector.jpg');
+
+
+SELECT * FROM Products WHERE name LIKE '%${req.body.pname}%' AND sellername LIKE '%${req.body.sname}%' AND category LIKE '%${req.body.category}%' AND price BETWEEN ${req.body.pricelow} AND ${req.body.pricehigh} and date BETWEEN '${req.body.datelow}' AND '${req.body.datehigh}';

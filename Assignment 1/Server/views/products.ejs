@@ -64,40 +64,40 @@
             <div class="search_row">
                 <div class="left text-light h3 ms-5">Product name</div>
                 <div class="right">
-                    <input class="form-control form-control-lg" placeholder="e.g. Vans Shoes" type="text"> 
+                    <input id="pname" class="form-control form-control-lg" placeholder="e.g. Vans Shoes" type="text"> 
                 </div>
              </div>
              <div class="search_row">
                 <div class="left text-light h3 ms-5">Seller name/username</div>
                 <div class="right">
-                    <input class="form-control form-control-lg" placeholder="e.g. Bobby Brown" type="text"> 
+                    <input id="sname" class="form-control form-control-lg" placeholder="e.g. Bobby Brown" type="text"> 
                 </div>
              </div>
              <div class="search_row">
                 <div class="left text-light h3 ms-5">Category</div>
                 <div class="right">
-                    <input class="form-control form-control-lg" placeholder="e.g. Cars" type="text"> 
+                    <input id="category" class="form-control form-control-lg" placeholder="e.g. Cars" type="text"> 
                 </div>
              </div>
              <div class="search_row">
                 <div class="left text-light h3 ms-5">Price</div>
                 <div class="right">
-                    <div class="price_left"><input class="form-control form-control-lg" placeholder="e.g. 115 $" type="text"></div>
+                    <div class="price_left"><input id="pricelow" class="form-control form-control-lg" placeholder="e.g. 115 $" type="text"></div>
                     <div class="middle text-light h3">to</div>
-                    <div class="price_right"><input class="form-control form-control-lg" placeholder="e.g. 140 $" type="text"></div>
+                    <div class="price_right"><input id="pricehigh" class="form-control form-control-lg" placeholder="e.g. 140 $" type="text"></div>
                 </div>
              </div>
              <div class="search_row">
                 <div class="left text-light h3 ms-5">Withdrawl date</div>
                 <div class="right">
-                    <div class="price_left"><input class="form-control form-control-lg" placeholder="e.g. 21/2/2022" type="text"></div>
+                    <div class="price_left"><input id="datelow" class="form-control form-control-lg" placeholder="e.g. 2020-01-30" type="text"></div>
                     <div class="middle text-light h3">to</div>
-                    <div class="price_right"><input class="form-control form-control-lg" placeholder="e.g. 2/10/2022" type="text"></div>
+                    <div class="price_right"><input id="datehigh" class="form-control form-control-lg" placeholder="e.g. 2024-12-25" type="text"></div>
                 </div>
              </div>
              <div class="buttons">
-                <button class="btn-lg bg-success text-light fw-bold me-5">Search</button>
-                <button class="btn-lg bg-danger text-light fw-bold">Clear</button>
+                <button onclick="searchProducts()" class="btn-lg bg-success text-light fw-bold me-5">Search</button>
+                <button onclick="clearSearch()" class="btn-lg bg-danger text-light fw-bold">Clear</button>
              </div>
         </div>
     </div>

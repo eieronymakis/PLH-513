@@ -36,4 +36,16 @@ router
         }
     })
 
+
+router
+    .route('/search')
+    .get(async (req,res) => {
+        if(req.session.isAuthenticated){
+            let query = `SELECT * FROM Products WHERE name LIKE '%${req.query.pname}%' AND sellername LIKE '%${req.query.sname}%' AND category LIKE '%${req.query.category}%' AND price BETWEEN ${req.query.pricelow} AND ${req.query.pricehigh} and dateofwithdrawl BETWEEN '${req.query.datelow}' AND '${req.query.datehigh}';`;
+            let result = await connection.executeQuery(query);
+            res.send(result).status(200).end();
+        }else{
+            res.status(401).end();
+        }
+    })
 module.exports = router;
