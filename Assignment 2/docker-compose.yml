@@ -1,0 +1,85 @@
+version: '3.5'
+services:
+    #-------------------------------------------------
+    keyrock:
+        image: fiware/idm:7.6.0
+        container_name: fiware-keyrock
+        hostname: keyrock
+        networks:
+          default:
+            ipv4_address: 172.18.1.5
+        depends_on:
+            - mysql-db
+        ports:
+            - '3005:3005'
+        environment:
+            - DEBUG=idm:*
+            - IDM_DB_HOST=mysql-db
+            - IDM_HOST=http://localhost:3005
+            - IDM_PORT=3005
+            - IDM_DB_PASS=secret
+            - IDM_DB_USER=root
+            - IDM_ADMIN_USER=admin
+            - IDM_ADMIN_EMAIL=admin@test.com
+            - IDM_ADMIN_PASS=1234
+    #-------------------------------------------------    
+    mysql-db:
+        restart: always
+        image: mysql:5.7
+        hostname: mysql-db
+        container_name: db-mysql
+        expose:
+            - '3306'
+        ports:
+            - '3306:3306'
+        environment:
+            - 'MYSQL_ROOT_PASSWORD=secret'
+            - 'MYSQL_ROOT_HOST=%'
+        volumes:
+            - mysql-db:/var/lib/mysql
+        networks:
+          default:
+            ipv4_address: 172.18.1.6
+    #-------------------------------------------------
+    mongo-db:
+        restart: always
+        image: mongo:4
+        hostname: mongo-db
+        container_name: db-mongo
+        expose:
+            - '27017'
+        ports:
+            - '27017:27017'
+        volumes:
+            - mongo-db:/data/db
+        networks:
+          default:
+            ipv4_address: 172.18.1.7
+    #-------------------------------------------------
+    # server:
+    #    restart: always
+    #    build: .
+    #    image: node-js-server:latest
+    #    container_name: node-js-server
+    #    command: node server.js
+    #    volumes:
+    #         - ./server-files:/server
+    #         - /server/node_modules
+    #    ports:
+    #         - '80:80'
+    #    depends_on:
+    #         - mysql-db
+    #         - mongo-db
+    #    networks:
+    #       default:
+    #         ipv4_address: 172.18.1.8
+
+volumes:
+    mysql-db: ~
+    mongo-db: ~
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.18.1.0/24
