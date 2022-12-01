@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const connection = require('../tools/db_connection');
+const {mongo} = require('../tools/mongo-connection');
 
 router
     .route('/')
@@ -15,13 +15,22 @@ router
 router
     .route('/all')
     .get(async (req,res) => {
-        if(req.session.isAuthenticated){
-            let query = `SELECT * FROM products;`
-            let result = await connection.executeQuery(query);
-            res.send(result).status(200).end();
-        }else{
-            res.status(401).end();
-        }
+    	const Products = mongo.model('Products',{
+    		name: {type: String},
+    		pcode: {type: String},
+    		price: {type: Number},
+    		dateofwithdrawl: {type: Date},
+    		sellername: {type: String},
+    		category: {type: String},
+    		photo: {type: String}
+    	});
+    	Products.find({}, function (err, docs){
+    		if(err){
+    			console.log(err);
+    		}else{
+    			res.send(docs).status(200).end();
+    		}
+    	});
     });
 
 router
