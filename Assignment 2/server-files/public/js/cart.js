@@ -1,10 +1,9 @@
-fetch('http://127.0.0.1:3000/user/info')
+fetch('http://127.0.0.1/user/info')
   .then((response) => response.json())
   .then((data) => {
     document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
   });
-
-
+  
 let p_container = document.getElementById('product_container');
 let cart_count = document.getElementById('cart_item_count');
 let cart_cost = document.getElementById('total_cost');

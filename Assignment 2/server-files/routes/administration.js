@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const connection = require('../tools/db_connection');
 
 router
     .route('/')
     .get(async (req,res) => {
-        if(req.session.isAuthenticated){
-            if(req.session.role == 'Admin'){
+        if(req.session.authenticated){
+            if(req.session.authenticated){
                 res.render('administration');
             }else{
                 res.redirect('/forbidden');

@@ -1,4 +1,4 @@
-fetch('http://127.0.0.1:3000/user/info')
+fetch('http://127.0.0.1/user/info')
   .then((response) => response.json())
   .then((data) => {
     document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
@@ -6,7 +6,7 @@ fetch('http://127.0.0.1:3000/user/info')
 
 function loadUsers(){
     let table = document.getElementById('tablebody');
-    fetch('http://127.0.0.1:3000/user/all')
+    fetch('http://127.0.0.1/user/all')
     .then((response) => response.json())
     .then((data) => {
         table.innerHTML = '';

@@ -1,14 +1,13 @@
-fetch('http://127.0.0.1:3000/user/info')
+fetch('http://127.0.0.1/user/info')
   .then((response) => response.json())
   .then((data) => {
     document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
   });
 
-
 let p_container = document.getElementById('product_container');
 
 function loadProducts(){
-    fetch('http://127.0.0.1:3000/products/all')
+    fetch('http://127.0.0.1/products/all')
     .then((response) => response.json())
     .then((data) => {
     p_container.innerHTML = '';
@@ -23,16 +22,16 @@ function loadProducts(){
                             <!--<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="white" class="bi bi-box" viewBox="0 0 16 16">
                                 <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
                             </svg>-->
-                            <img src="${data[i].pphoto}" onerror="this.src='/img/coming-soon.png'">
+                            <img src="${data[i].photo}" onerror="this.src='/img/coming-soon.png'">
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-6">
                     <h3 class="fw-bold text-light">${data[i].name}</h3>
                     <div class="mt-1 mb-0 text-muted small">
-                        <span class="h5 text-warning">Seller : ${data[i].sellername}</span>
+                        <span class="h5 text-warning">Seller : ${data[i].seller}</span>
                     </div>
                     <div class="mt-1 mb-2 text-muted small">
-                        <span class="h5 text-primary">Product Code : ${data[i].pcode}</span>
+                        <span class="h5 text-primary">Product Code : ${data[i].code}</span>
                     </div>
                     <p class="mb-4 mb-md-0 text-light mt-1">
                         No description yet...
@@ -59,28 +58,28 @@ function loadProducts(){
     });
 }
 
-function addToCart(id){
-    const data = {
-        pid: id
-    };
-    fetch(`http://127.0.0.1:3000/products/addtocart`, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}
+// function addToCart(id){
+//     const data = {
+//         pid: id
+//     };
+//     fetch(`http://127.0.0.1:3000/products/addtocart`, {
+//     method: 'POST',
+//     headers: {
+//         'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(data),
+//     })
+//     .catch((error) => {
+//         console.error('Error:', error);
+//     });
+// }
 
 function searchProducts(){
-    let pname = document.getElementById('pname').value;
-    let sname = document.getElementById('sname').value;
+    let name = document.getElementById('pname').value;
+    let seller = document.getElementById('sname').value;
     let category = document.getElementById('category').value;
     let pricelow = document.getElementById('pricelow').value;
-    let pricehigh = document.getElementById('pricehigh').value;
+    let pricehigh = document.getElementE-shopById('pricehigh').value;
     let datelow = document.getElementById('datelow').value;
     let datehigh = document.getElementById('datehigh').value;
 
@@ -89,7 +88,7 @@ function searchProducts(){
     pricelow = pricelow.length === 0 ? `${Number.MIN_SAFE_INTEGER}` : pricelow;
     pricehigh = pricehigh.length === 0 ? `${Number.MAX_SAFE_INTEGER}` : pricehigh; 
 
-    fetch(`http://127.0.0.1:3000/products/search?pname=${pname}&sname=${sname}&category=${category}&pricelow=${pricelow}&pricehigh=${pricehigh}&datelow=${datelow}&datehigh=${datehigh}`)
+    fetch(`http://127.0.0.1/products/search?name=${name}&seller=${seller}&category=${category}&pricelow=${pricelow}&pricehigh=${pricehigh}&datelow=${datelow}&datehigh=${datehigh}`)
     .then((response) => response.json())
     .then((data) => {
         p_container.innerHTML = '';
@@ -104,13 +103,13 @@ function searchProducts(){
                             <!--<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="white" class="bi bi-box" viewBox="0 0 16 16">
                                 <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
                             </svg>-->
-                            <img src="${data[i].pphoto}" onerror="this.src='/img/coming-soon.png'">
+                            <img src="${data[i].photo}" onerror="this.src='/img/coming-soon.png'">
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-6">
                     <h3 class="fw-bold text-light">${data[i].name}</h3>
                     <div class="mt-1 mb-0 text-muted small">
-                        <span class="h5 text-warning">Seller : ${data[i].sellername}</span>
+                        <span class="h5 text-warning">Seller : ${data[i].seller}</span>
                     </div>
                     <div class="mt-1 mb-2 text-muted small">
                         <span class="h5 text-primary">Product Code : ${data[i].pcode}</span>

@@ -1,0 +1,38 @@
+[
+    {
+      "category": "books",
+      "dateofwithdrawl": "2023-12-31",
+      "name": "Save the Cat!® Writes for TV: The Last Book on Creating Binge-Worthy Content Youll Ever Need",
+      "pcode": "B08ZB4SN23",
+      "photo": "/img/products/savethecat.jpg",
+      "price": 10.59,
+      "seller": "fcab9f95-b28e-480c-a43e-4c76fac30b20"
+    },
+    {
+      "category": "clothing",
+      "dateofwithdrawl": "2023-02-28",
+      "name": "Suncloud Polarized Sunglasses",
+      "pcode": "B085WNWHHY",
+      "photo": "/img/products/sunglasses.jpg",
+      "price": 54.95,
+      "seller": "fcab9f95-b28e-480c-a43e-4c76fac30b20"
+    },
+    {
+      "category": "clothing",
+      "dateofwithdrawl": "2024-11-01",
+      "name": "Seiko Mens SNE039 Stainless Steel Solar Watch",
+      "pcode": "B0043ZT04K",
+      "photo": "/img/products/watch.jpg",
+      "price": 101.19,
+      "seller": "fcab9f95-b28e-480c-a43e-4c76fac30b20"
+    },
+    {
+      "category": "Television & Video",
+      "dateofwithdrawl": "2022-12-31",
+      "name": "HuaKastro 14 FT Inflatable Movie Screen Indoor Outdoor 104 Projector Screen",
+      "pcode": "B0957GH8VV",
+      "photo": "/img/products/projector.jpg",
+      "price": 91.79,
+      "seller": "fcab9f95-b28e-480c-a43e-4c76fac30b20"
+    }
+  ]

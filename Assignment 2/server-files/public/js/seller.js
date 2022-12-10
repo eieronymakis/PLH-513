@@ -1,4 +1,4 @@
-fetch('http://127.0.0.1:3000/user/info')
+fetch('http://127.0.0.1/user/info')
   .then((response) => response.json())
   .then((data) => {
     document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
@@ -6,7 +6,7 @@ fetch('http://127.0.0.1:3000/user/info')
   
 function loadProducts(){
     let table = document.getElementById('tablebody');
-    fetch('http://127.0.0.1:3000/seller/products')
+    fetch('http://127.0.0.1/seller/products')
     .then((response) => response.json())
     .then((data) => {
         table.innerHTML = '';
@@ -15,20 +15,20 @@ function loadProducts(){
             `<tr>
                 <th scope="row">${data[i].id}</th>
                 <td>${data[i].name}</td>
-                <td>${data[i].pcode}</td>
+                <td>${data[i].code}</td>
                 <td>${data[i].price}</td>
                 <td>${data[i].dateofwithdrawl}</td>
                 <td>${data[i].category}</td>
-                <td>${data[i].pphoto}</td>
-                <td><button class="btn btn-success" onclick=showModal(${data[i].id})>Change</button></td>
-                <td><button class="btn btn-danger" onclick=removeItem(${data[i].id})>Delete</button></td>
+                <td>${data[i].photo}</td>
+                <td><button class="btn btn-success" onclick=showModal("${data[i].id}")>Change</button></td>
+                <td><button class="btn btn-danger" onclick=removeItem("${data[i].id}")>Delete</button></td>
             </tr>`
         }
     });
 }
 
 function removeItem(pid){
-    fetch(`http://127.0.0.1:3000/seller/products/${pid}/delete`, {
+    fetch(`http://127.0.0.1/seller/products/${pid}/delete`, {
     method: 'DELETE',
     headers: {
         'Content-Type': 'application/json',
@@ -47,17 +47,17 @@ function removeItem(pid){
 function showModal(pid){
     var myModal = document.getElementById('staticBackdrop');
     var modal = bootstrap.Modal.getOrCreateInstance(myModal);
-    fetch(`http://127.0.0.1:3000/seller/products/${pid}/info`)
+    fetch(`http://127.0.0.1/seller/products/${pid}/info`)
     .then((response) => response.json())
     .then((data) => {
-        document.getElementById('modal_id').value = data[0].id
-        document.getElementById('modal_name').value = data[0].name;
-        document.getElementById('modal_pcode').value = data[0].pcode;
-        document.getElementById('modal_price').value = data[0].price;
-        document.getElementById('modal_dow').value = data[0].dateofwithdrawl;
-        document.getElementById('modal_sname').value = data[0].sellername;
-        document.getElementById('modal_category').value = data[0].category;
-        document.getElementById('modal_pphoto').value = data[0].pphoto;
+        document.getElementById('modal_id').value = data.id
+        document.getElementById('modal_name').value = data.name;
+        document.getElementById('modal_pcode').value = data.code;
+        document.getElementById('modal_price').value = data.price;
+        document.getElementById('modal_dow').value = data.dateofwithdrawl;
+        document.getElementById('modal_sname').value = data.seller;
+        document.getElementById('modal_category').value = data.category;
+        document.getElementById('modal_pphoto').value = data.photo;
         modal.show();
     })
 }
@@ -72,15 +72,15 @@ function showModal2(){
 function updateProduct(){
     const data = {
         name : document.getElementById('modal_name').value,
-        pcode : document.getElementById('modal_pcode').value,
+        code : document.getElementById('modal_pcode').value,
         price: document.getElementById('modal_price').value,
-        dow: document.getElementById('modal_dow').value,
-        sname : document.getElementById('modal_sname').value,
+        dateofwithdrawl: document.getElementById('modal_dow').value,
         category: document.getElementById('modal_category').value,
-        pphoto : document.getElementById('modal_pphoto').value
+        photo : document.getElementById('modal_pphoto').value
     };
-    fetch(`http://127.0.0.1:3000/seller/products/${document.getElementById('modal_id').value}/update`, {
-    method: 'POST',
+    let pid = document.getElementById('modal_id').value;
+    fetch(`http://127.0.0.1/seller/products/${pid}/update`, {
+    method: 'post',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -96,13 +96,13 @@ function updateProduct(){
 function addProduct(){
     const data = {
         name : document.getElementById('modal2_name').value,
-        pcode : document.getElementById('modal2_pcode').value,
+        code : document.getElementById('modal2_pcode').value,
         price: document.getElementById('modal2_price').value,
-        dow: document.getElementById('modal2_dow').value,
+        dateofwithdrawl: document.getElementById('modal2_dow').value,
         category: document.getElementById('modal2_category').value,
-        pphoto : document.getElementById('modal2_pphoto').value
+        photo : document.getElementById('modal2_pphoto').value
     };
-    fetch(`http://127.0.0.1:3000/seller/products/add`, {
+    fetch(`http://127.0.0.1/seller/products/add`, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',

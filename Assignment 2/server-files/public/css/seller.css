@@ -122,6 +122,15 @@ span{
     margin-right: auto;
 }
 
+.table_container{
+    padding-bottom: 2rem;
+}
+
 .table_container table tbody{
     overflow-y: scroll;
 }
+
+.modal-dialog{
+    min-width: 650px !important;
+}
+

@@ -1,12 +1,10 @@
 function authenticate(){
-    let uname_input = document.getElementById('uname_input').value;
-    let pass_input = document.getElementById('pass_input').value;
-
+    let name = document.getElementById('uname_input').value;
+    let password = document.getElementById('pass_input').value;
     let data = {
-        username: uname_input,
-        password: pass_input
+        name: name,
+        password: password
     };
-
     fetch('http://127.0.0.1/auth', {
     method: 'POST',
     headers: {
