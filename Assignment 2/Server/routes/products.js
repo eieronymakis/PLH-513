@@ -1,7 +1,8 @@
-const axios = require('axios');
 const express = require('express');
 const router = express.Router();
 const orion = require('../tools/orion');
+const dataStorage = require('../tools/dataStorage');
+const keyrock = require('../tools/keyrock');
 
 router
     .route('/')
@@ -31,9 +32,17 @@ router
     });
 
 router
-    .route('/addtocart')
+    .route('/:pid/addtocart')
     .post(async (req, res) => {
-        
+        if(req.session.authenticated){
+            let user = await keyrock.getUser(req.session.xsubtoken);
+            let response = await dataStorage.addToCart({uid: user.id,pid: req.params.pid});
+            if(response){
+                res.status(200).end();
+            }else{
+                res.status(500).end();
+            }
+        }
     })
 
 

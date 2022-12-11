@@ -30,6 +30,16 @@ module.exports.getAllProducts = async() => {
     }
 }
 
+module.exports.getProductByID = async( _pid) => {
+    try{
+        let response = await axios.get(`${orionEndpoint}/v2/entities/${_pid}?options=keyValues`);
+        let product = response.data;
+        return product;
+    }catch(e){
+        return null;
+    }
+}
+
 module.exports.getProduct = async(_xsubtoken, _pid) => {
     try{
         let user = await keyrock.getUser(_xsubtoken);

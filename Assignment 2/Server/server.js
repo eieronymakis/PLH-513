@@ -19,9 +19,11 @@ app.use(cors({
     origin: '*'
 }));
 
-const bodyparser = require('body-parser');
-app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({extended:true}));
+app.use(express.json());
+app.use(express.urlencoded({
+    extended:true
+}));
+
 
 app.use(express.static('public'));
 app.use('/css', express.static(__dirname+'public/css'));

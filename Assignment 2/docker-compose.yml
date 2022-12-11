@@ -21,7 +21,7 @@ services:
             - IDM_DB_USER=root
             - IDM_ADMIN_USER=admin
             - IDM_ADMIN_EMAIL=admin@test.com
-            - IDM_ADMIN_PASS=1234
+            - IDM_ADMIN_PASS=1111
     #-------------------------------------------------    
     mysql-db:
         restart: always
@@ -58,12 +58,12 @@ services:
     #-------------------------------------------------
     # server:
     #    restart: always
-    #    build: .
-    #    image: node-js-server:latest
-    #    container_name: node-js-server
+    #    build: ./Server
+    #    image: node-server:latest
+    #    container_name: node-server
     #    command: node server.js
     #    volumes:
-    #         - ./server-files:/server
+    #         - ./Server:/server
     #         - /server/node_modules
     #    ports:
     #         - '80:80'
@@ -73,6 +73,59 @@ services:
     #    networks:
     #       default:
     #         ipv4_address: 172.18.1.8
+    #-------------------------------------------------
+    orion:
+        image: fiware/orion
+        hostname: orion
+        container_name: fiware-orion
+        links:
+            - mongo-db
+        ports:
+            - '1026:1026'
+        command: -dbhost mongo-db
+        networks:
+          default:
+            ipv4_address: 172.18.1.9
+    #-------------------------------------------------        
+    pep-proxy:
+        restart: always
+        image: fiware/pep-proxy
+        container_name: pep-proxy
+        environment:
+            - 'PEP_PROXY_HTTPS_ENABLED=false'
+        networks:
+          default:
+            ipv4_address: 172.18.1.10
+        ports:
+            - '1027:1027'
+        expose:
+            - '1027'
+        environment:
+            - PEP_PROXY_APP_HOST=orion
+            - PEP_PROXY_APP_PORT=1026
+            - PEP_PROXY_PORT=1027
+            - PEP_PROXY_IDM_HOST=keyrock
+            - PEP_PROXY_HTTPS_ENABLED=false
+    #-------------------------------------------------
+    data-storage:
+        restart: always
+        build: ./DataStorageAPI
+        image: data-storage-api:latest
+        container_name: data-storage
+        command: node api.js
+        expose:
+           - '3000'
+        ports:
+           - '3000:3000'
+        depends_on:
+           - mongo-db
+        hostname: datastorage
+        volumes:
+           - ./DataStorageAPI:/DataStorageAPI
+           - /DataStorageAPI/node_modules
+        networks:
+           default:
+              ipv4_address: 172.18.1.11    
 
 volumes:
     mysql-db: ~

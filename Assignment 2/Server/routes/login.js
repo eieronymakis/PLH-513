@@ -4,7 +4,11 @@ const router = express.Router();
 router
     .route('/')
     .get(async (req,res) => {
-        res.render('login');
+        if(!req.session.authenticated){
+            res.render('login');
+        }else{
+            res.redirect('/welcome')
+        }
     })
 
 module.exports = router;
