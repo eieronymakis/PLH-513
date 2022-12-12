@@ -3,13 +3,14 @@ const keyrock = require('./keyrock');
 const crypto = require('crypto');
 require('dotenv').config();
 
-const orionEndpoint = "http://172.18.1.9:1026";
+const orionProxy = "http://172.18.1.10:1027";
+const headers ={headers:{'X-Auth-Token': process.env.ORION_PROXY_KEY}};
 
 
 module.exports.getSellerProducts = async(_xsubtoken) => {
     try{
         let user = await keyrock.getUser(_xsubtoken);
-        let response = await axios.get(`${orionEndpoint}/v2/entities?options=keyValues&q=seller==${user.id}`);
+        let response = await axios.get(`${orionProxy}/v2/entities?options=keyValues&q=seller==${user.id}`,headers);
         return response.data;
     }catch(e){
         return null;
@@ -18,7 +19,7 @@ module.exports.getSellerProducts = async(_xsubtoken) => {
 
 module.exports.getAllProducts = async() => {
     try{
-        let response = await axios.get(`${orionEndpoint}/v2/entities?options=keyValues`);
+        let response = await axios.get(`${orionProxy}/v2/entities?options=keyValues`,headers);
         let products = response.data;
         for(let p in products){
             let uid = products[p].seller;
@@ -32,7 +33,7 @@ module.exports.getAllProducts = async() => {
 
 module.exports.getProductByID = async( _pid) => {
     try{
-        let response = await axios.get(`${orionEndpoint}/v2/entities/${_pid}?options=keyValues`);
+        let response = await axios.get(`${orionProxy}/v2/entities/${_pid}?options=keyValues`,headers);
         let product = response.data;
         return product;
     }catch(e){
@@ -43,7 +44,7 @@ module.exports.getProductByID = async( _pid) => {
 module.exports.getProduct = async(_xsubtoken, _pid) => {
     try{
         let user = await keyrock.getUser(_xsubtoken);
-        let response = await axios.get(`${orionEndpoint}/v2/entities?options=keyValues&q=seller==${user.id}&id=${_pid}`);
+        let response = await axios.get(`${orionProxy}/v2/entities?options=keyValues&q=seller==${user.id}&id=${_pid}`,headers);
         let product = response.data[0];
         return product;
     }catch(e){
@@ -87,11 +88,7 @@ module.exports.addProduct = async(_xsubtoken, _product) => {
         }
         let hash = crypto.createHash('md5').update(JSON.stringify(data)).digest("hex");
         data.id = hash;
-        axios({
-            method: 'post',
-            url: `${orionEndpoint}/v2/entities`,
-            data: data
-        });
+        axios.post(`${orionProxy}/v2/entities`,data,headers);
         return hash;
     }catch(e){
         return null;
@@ -100,7 +97,7 @@ module.exports.addProduct = async(_xsubtoken, _product) => {
 
 module.exports.removeProduct = async(_id) =>{
     try{
-        let response = await axios.delete(`${orionEndpoint}/v2/entities/${_id}`);
+        let response = await axios.delete(`${orionProxy}/v2/entities/${_id}`,headers);
         return true;
     }catch(e){
         return null;
@@ -135,11 +132,7 @@ module.exports.updateProduct = async(_product, _id) => {
                 "type": "String"
             }
         }
-        axios({
-            method: 'patch',
-            url: `${orionEndpoint}/v2/entities/${_id}/attrs`,
-            data: data
-        });
+        await axios.patch(`${orionProxy}/v2/entities/${_id}/attrs`,data,headers);
         return true;
     }catch(e){
         return null;

@@ -80,19 +80,17 @@ services:
         container_name: fiware-orion
         links:
             - mongo-db
-        ports:
-            - '1026:1026'
+        expose:
+            - '1026'
         command: -dbhost mongo-db
         networks:
           default:
             ipv4_address: 172.18.1.9
     #-------------------------------------------------        
-    pep-proxy:
+    orion-proxy:
         restart: always
         image: fiware/pep-proxy
-        container_name: pep-proxy
-        environment:
-            - 'PEP_PROXY_HTTPS_ENABLED=false'
+        container_name: orion-proxy
         networks:
           default:
             ipv4_address: 172.18.1.10
@@ -106,26 +104,58 @@ services:
             - PEP_PROXY_PORT=1027
             - PEP_PROXY_IDM_HOST=keyrock
             - PEP_PROXY_HTTPS_ENABLED=false
+            - PEP_PROXY_AUTH_ENABLED=true
+            - PEP_PROXY_IDM_SSL_ENABLED=false
+            - PEP_PROXY_IDM_PORT=3005
+            - PEP_PROXY_APP_ID=a99ac86e-fd87-411c-9736-54cef98a4e2e
+            - PEP_PROXY_USERNAME=pep_proxy_73000368-8e0d-44e6-821d-333010975a92
+            - PEP_PASSWORD=pep_proxy_3d9898c5-f7f5-4e0c-a72a-c1bde76f31d3
+            - PEP_PROXY_PDP=idm
+            - PEP_PROXY_MAGIC_KEY=03400a69997686db8d30251ed72e6f97
     #-------------------------------------------------
     data-storage:
         restart: always
         build: ./DataStorageAPI
         image: data-storage-api:latest
+        hostname: datastorage
         container_name: data-storage
         command: node api.js
         expose:
-           - '3000'
-        ports:
-           - '3000:3000'
+            - '3000'
         depends_on:
            - mongo-db
-        hostname: datastorage
         volumes:
            - ./DataStorageAPI:/DataStorageAPI
            - /DataStorageAPI/node_modules
         networks:
            default:
-              ipv4_address: 172.18.1.11    
+              ipv4_address: 172.18.1.11
+    #-------------------------------------------------
+    data-storage-proxy:
+        restart: always
+        image: fiware/pep-proxy
+        container_name: data-storage-proxy
+        networks:
+          default:
+            ipv4_address: 172.18.1.12
+        ports:
+            - '3001:3001'
+        expose:
+            - '3001'
+        environment:
+            - PEP_PROXY_APP_HOST=datastorage
+            - PEP_PROXY_APP_PORT=3000
+            - PEP_PROXY_PORT=3001
+            - PEP_PROXY_IDM_HOST=keyrock
+            - PEP_PROXY_HTTPS_ENABLED=false
+            - PEP_PROXY_AUTH_ENABLED=true
+            - PEP_PROXY_IDM_SSL_ENABLED=false
+            - PEP_PROXY_IDM_PORT=3005
+            - PEP_PROXY_APP_ID=a99ac86e-fd87-411c-9736-54cef98a4e2e
+            - PEP_PROXY_USERNAME=pep_proxy_73000368-8e0d-44e6-821d-333010975a92
+            - PEP_PASSWORD=pep_proxy_3d9898c5-f7f5-4e0c-a72a-c1bde76f31d3
+            - PEP_PROXY_PDP=idm
+            - PEP_PROXY_MAGIC_KEY=aec9f33dc8d9d3d5738f6d01cc5a5c18
 
 volumes:
     mysql-db: ~

@@ -1,10 +1,12 @@
 const axios = require('axios');
-const dataStorageUrl = 'http://127.0.0.1:3000'
 const orion = require('./orion');
+
+const dataStorageProxy = 'http://172.18.1.12:3001';
+const headers ={headers:{'X-Auth-Token': process.env.DATA_STORAGE_PROXY_KEY}};
 
 module.exports.addToCart = async (_d) => { 
     try{
-        await axios.post(`${dataStorageUrl}/carts/add`,{uid: _d.uid, pid: _d.pid})
+        await axios.post(`${dataStorageProxy}/carts/add`,{uid: _d.uid, pid: _d.pid}, headers)
         return true;
     }catch(e){
         console.log('Server : Error @ Cart Insertion');
@@ -14,7 +16,7 @@ module.exports.addToCart = async (_d) => {
 
 module.exports.getCart = async (_uid) => {
     try{
-        let response = await axios.get(`${dataStorageUrl}/carts/${_uid}`);
+        let response = await axios.get(`${dataStorageProxy}/carts/${_uid}`, headers);
         let items = response.data;
         for(let i in items){
            items[i].description = await orion.getProductByID(items[i].pid);
@@ -28,7 +30,7 @@ module.exports.getCart = async (_uid) => {
 
 module.exports.removeCart = async(_uid, _cid) => {
     try{
-        let response = await axios.delete(`${dataStorageUrl}/carts/${_uid}/delete/${_cid}`);
+        let response = await axios.delete(`${dataStorageProxy}/carts/${_uid}/delete/${_cid}`, headers);
         return true;
     }catch(e){
         console.log('Server : Error @ Cart Deletion');

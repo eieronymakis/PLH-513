@@ -5,7 +5,11 @@
 const crypto = require('crypto');
 const axios =  require('axios');
 const fs = require('fs');
+const path = require('path');
+require('dotenv').config({path: path.resolve(__dirname, '../.env') })
 
+const orionProxy = "http://172.18.1.10:1027";
+const headers ={headers:{'X-Auth-Token': process.env.ORION_PROXY_KEY}};
 
 const postToOrion = async (elem, c) =>{
     data = {
@@ -41,11 +45,8 @@ const postToOrion = async (elem, c) =>{
     }
     let hash = crypto.createHash('md5').update(JSON.stringify(data)).digest("hex");
     data.id = hash;
-    axios({
-        method: 'post',
-        url: 'http://localhost:1026/v2/entities',
-        data: data
-    });
+    await axios.post(`${orionProxy}/v2/entities`,data,headers);
+    return true;
 } 
 
 let raw = fs.readFileSync('./sample-products.json');

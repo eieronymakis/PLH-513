@@ -106,7 +106,6 @@ module.exports.getUserRole = async(_xsubtoken) => {
             "role_name": user_role_name
         }
     }catch(e){
-        console.log(e);
         return null;
     }
 }
