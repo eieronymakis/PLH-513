@@ -6,7 +6,7 @@ const keyrockEndpoint = 'http://172.18.1.5:3005';
 /* Login user */
 module.exports.login = async(req, res) => {
     try{
-        const res1 = await axios.post(`${keyrockEndpoint}/v1/auth/tokens`,{"name":req.body.name, "password": req.body.password});
+        const res1 = await axios.post(`${keyrockEndpoint}/v1/auth/tokens`,{"name":req.body.name, "password": req.body.password},{headers:{'Content-Type':'application/json'}});
         req.session.authenticated = true;
         req.session.xsubtoken = res1.headers["x-subject-token"];
         res.status(200).send({"authentication":true, "x-sub-token":req.session.xsubtoken}).end();
@@ -22,10 +22,7 @@ module.exports.login = async(req, res) => {
 /*Get an X-Auth-Token*/
 module.exports.getXAuth = async () => {
     try{
-        let response = await axios.post(`${keyrockEndpoint}/v1/auth/tokens`, {
-            "name": process.env.KEYROCK_ADMIN_NAME,
-            "password": process.env.KEYROCK_ADMIN_PASS
-        })
+        let response = await axios.post(`${keyrockEndpoint}/v1/auth/tokens`, {"name": process.env.KEYROCK_ADMIN_NAME,"password": process.env.KEYROCK_ADMIN_PASS},{headers:{'Content-Type':'application/json'}});
         return response.headers['x-subject-token'];
     }catch(e){
         return null;
@@ -113,9 +110,11 @@ module.exports.getUserRole = async(_xsubtoken) => {
 module.exports.registerUser = async(data) => {
     try{
         let xauth = await this.getXAuth();
+        console.log(xauth);
         axios.post(`${keyrockEndpoint}/v1/users`,{"user":{"username":data.uname_input,"email":data.email_input,"password":data.pass_input} },{headers:{"X-Auth-token": xauth,"Content-Type": "application/json"}});
         return true;
     }catch(e){
+        console.log(e.data.error.message)
         return false;
     }
 }

@@ -16,7 +16,7 @@ function loadCart(){
         cart_count.innerHTML = `(${data.length} item(s) in your cart)`;
         let cost = 0.0;
         for(let i = 0; i < data.length; i++){
-            cost += data[i].description.price;
+            cost += parseFloat(data[i].description.price);
             p_container.innerHTML +=
             `<div class="card mb-4">
                 <div class="card-body p-4 bg-dark">
@@ -57,7 +57,7 @@ function loadCart(){
                 </div>
             </div>`
         }
-        cart_cost.innerHTML = `$${cost.toFixed(2)}`;
+        cart_cost.innerHTML = parseFloat(cost).toFixed(2);
     })
     .catch((error) => {
         console.log('Error:', error);
