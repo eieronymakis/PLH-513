@@ -1,31 +1,20 @@
 html{
     height:100% !important;
     width: 100% !important;
-    /* fallback for old browsers */
-    background: #6a11cb !important;
-
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, rgb(40, 54, 107), rgb(32, 33, 71)) !important;
-    
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right, rgb(40, 54, 107), rgb(32, 33, 71)) !important;
+    background-color: black !important;
 }
-
 body {
     height: inherit;
     width: inherit;
-    background-color: transparent;
+    background: linear-gradient(to right, rgb(40, 54, 107), rgb(32, 33, 71)) !important;
 }
-
 section{
     overflow-y: scroll;
 }
-
-
 span{
     color: white;
 }
-
 .card-body{
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px!important;
 }

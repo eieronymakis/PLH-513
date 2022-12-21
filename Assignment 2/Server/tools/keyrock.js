@@ -110,7 +110,6 @@ module.exports.getUserRole = async(_xsubtoken) => {
 module.exports.registerUser = async(data) => {
     try{
         let xauth = await this.getXAuth();
-        console.log(xauth);
         axios.post(`${keyrockEndpoint}/v1/users`,{"user":{"username":data.uname_input,"email":data.email_input,"password":data.pass_input} },{headers:{"X-Auth-token": xauth,"Content-Type": "application/json"}});
         return true;
     }catch(e){
@@ -119,3 +118,67 @@ module.exports.registerUser = async(data) => {
     }
 }
 
+
+module.exports.getAppUsers = async () => {
+    try{
+        let xauth = await this.getXAuth();
+        let appid = await this.getAppID();
+        let response1 = await axios.get(`${keyrockEndpoint}/v1/users/`,{headers:{"X-Auth-token":xauth}});
+        let users = response1.data.users;
+        let response2 = await axios.get(`${keyrockEndpoint}/v1/applications/${appid}/users`,{headers:{"X-Auth-token":xauth}});
+        let appusers = response2.data.role_user_assignments;
+        for(let i = 0; i < appusers.length; i++){
+            for(let j = 0; j < users.length; j++){
+                if(appusers[i].user_id === users[j].id){
+                    appusers[i].email = users[j].email;
+                    appusers[i].username = users[j].username;
+                    break;
+                }
+            }
+            appusers[i].role_name = await this.getRoleName(appusers[i].role_id);
+        }
+        return appusers;
+    }catch(e){
+        console.log('Error @ Fetching App Users');
+        return null;
+    }
+}
+
+module.exports.getAppUser = async (_id) =>{
+    try{
+        let users = await this.getAppUsers();
+        let result = users.filter(a => a.user_id === _id);
+        return result[0];
+    }catch{
+        console.log('Error @ Fetching App User');
+        return null;
+    }
+}
+
+module.exports.updateUser = async(_id, _username) => {
+    try{
+        let xauth = await this.getXAuth();
+        let response = axios.patch(`${keyrockEndpoint}/v1/users/${_id}`,
+        {
+            "user": {
+              "username": `${_username}`
+            }
+        },
+        {headers:{"Content-Type":"application/json","X-Auth-token":xauth}});
+        return true;
+    }catch(e){
+        console.log('Error @ User Update');
+        return null;
+    }
+}
+
+module.exports.deleteUser = async (_id) => {
+    try{
+        let xauth = await this.getXAuth();
+        await axios.delete(`${keyrockEndpoint}/v1/users/${_id}`,{headers:{"X-Auth-token":xauth}});
+        return true;
+    }catch(e){
+        console.log('Error @ User Deletion');
+        return null;
+    }
+}
