@@ -3,3 +3,6 @@ fetch('http://127.0.0.1/user/info')
   .then((data) => {
     document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
   });
+
+  const toast = new bootstrap.Toast(document.getElementById('orionNotification'))
+  toast.show()

@@ -1,7 +1,7 @@
 const axios = require('axios');
 require('dotenv').config();
 
-const keyrockEndpoint = 'http://172.18.1.5:3005';
+const keyrockEndpoint = 'http://localhost:3005';
 
 /* Login user */
 module.exports.login = async(req, res) => {

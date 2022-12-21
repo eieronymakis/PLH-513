@@ -57,7 +57,7 @@ function loadCart(){
                 </div>
             </div>`
         }
-        cart_cost.innerHTML = parseFloat(cost).toFixed(2);
+        cart_cost.innerHTML = parseFloat(cost).toFixed(2)+"$";
     })
     .catch((error) => {
         console.log('Error:', error);
@@ -73,10 +73,10 @@ function removeItem(id){
     })
     .then( () => {
         $("#alert1").hide().show('medium');
-        setTimeout(function(){$("#alert1").hide()},2000)
+        setTimeout(function(){$("#alert1").hide()},2000);
+        loadCart();
     })
     .catch((error) => {
         console.error('Error:', error);
     });
-    loadCart();
 }

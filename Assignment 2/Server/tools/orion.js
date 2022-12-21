@@ -3,7 +3,7 @@ const keyrock = require('./keyrock');
 const crypto = require('crypto');
 require('dotenv').config();
 
-const orionProxy = "http://172.18.1.10:1027";
+const orionProxy = "http://localhost:1027";
 const headers ={headers:{'X-Auth-Token': process.env.ORION_PROXY_KEY}};
 
 

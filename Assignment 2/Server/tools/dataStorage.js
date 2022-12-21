@@ -1,7 +1,7 @@
 const axios = require('axios');
 const orion = require('./orion');
 
-const dataStorageProxy = 'http://172.18.1.12:3001';
+const dataStorageProxy = 'http://localhost:3001';
 const headers ={headers:{'X-Auth-Token': process.env.DATA_STORAGE_PROXY_KEY}};
 
 module.exports.addToCart = async (_d) => { 

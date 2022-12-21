@@ -24,6 +24,7 @@ services:
             - IDM_ADMIN_PASS=1111
     #-------------------------------------------------    
     mysql-db:
+        platform: linux/x86_64 #remember to remove this
         restart: always
         image: mysql:5.7
         hostname: mysql-db
