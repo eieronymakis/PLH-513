@@ -1,8 +1,28 @@
 const axios = require('axios');
 const orion = require('./orion');
 
-const dataStorageProxy = 'http://localhost:3001';
+const dataStorageProxy = 'http://172.18.1.12:3001';
 const headers ={headers:{'X-Auth-Token': process.env.DATA_STORAGE_PROXY_KEY}};
+
+module.exports.addSubscription = async(_s) => {
+    try{
+        await axios.post(`${dataStorageProxy}/subscriptions/add`, {uid: _s.uid, sid : _s.sid, pid: _s.pid}, headers)
+        return true;
+    }catch(e){
+        console.log('Server : Error @ Subscription Insertion');
+        return false;
+    }
+}
+
+module.exports.getUserSubscriptions = async (_uid) =>{
+    try{
+        let result = await axios.get(`${dataStorageProxy}/subscriptions/user/${_uid}`, headers);
+        return result.data;
+    }catch(e){
+        console.log('Server : Error @ Fetching User Subscriptions');
+        return {};
+    }
+}
 
 module.exports.addToCart = async (_d) => { 
     try{

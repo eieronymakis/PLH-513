@@ -3,9 +3,47 @@ const keyrock = require('./keyrock');
 const crypto = require('crypto');
 require('dotenv').config();
 
-const orionProxy = "http://localhost:1027";
+const orionProxy = "http://172.18.1.10:1027";
 const headers ={headers:{'X-Auth-Token': process.env.ORION_PROXY_KEY}};
 
+
+module.exports.getSubscriptionId = async () => {
+    try{
+        let result = await axios.get(`${orionProxy}/v2/subscriptions`,headers);
+        let target = result.data;
+        return target[target.length-1];
+    }catch(e){
+        return null;
+    }
+}
+
+module.exports.addSubscription = async (_d) => {
+    try{
+        let data = {
+                "description": "Product Subscription",
+                "subject": {
+                  "entities": [
+                    {
+                      "id": `${_d.pid}`,
+                      "type": "Product"
+                    }
+                  ],
+                  "condition": {
+                    "attrs": ["available"]
+                  }
+                },
+                "notification": {
+                  "http": {
+                    "url": "http://172.18.1.8:80/subscriptions/webhook"
+                  }
+                }
+        }
+        await axios.post(`${orionProxy}/v2/subscriptions`, data, headers);
+        return true;
+    }catch(e){
+        return false;
+    }
+}
 
 module.exports.getSellerProducts = async(_xsubtoken) => {
     try{

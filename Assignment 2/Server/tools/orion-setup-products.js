@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config({path: path.resolve(__dirname, '../.env') })
 
-const orionProxy = "http://localhost:1027";
+const orionProxy = "http://172.18.1.10:1027";
 const headers ={headers:{'X-Auth-Token': process.env.ORION_PROXY_KEY}};
 
 const postToOrion = async (elem, c) =>{

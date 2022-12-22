@@ -8,6 +8,8 @@ app.use(express.urlencoded({
 }));
 
 app.use('/carts', require('./routes/carts'));
+app.use('/subscriptions', require('./routes/subscriptions'));
+app.use('/notifications', require('./routes/notifications'));
 
 app.get('/', (req, res) => {
     res.status(200).send({
