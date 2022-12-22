@@ -74,7 +74,7 @@ function searchProducts(){
     let seller = document.getElementById('sname').value;
     let category = document.getElementById('category').value;
     let pricelow = document.getElementById('pricelow').value;
-    let pricehigh = document.getElementE-shopById('pricehigh').value;
+    let pricehigh = document.getElementById('pricehigh').value;
     let datelow = document.getElementById('datelow').value;
     let datehigh = document.getElementById('datehigh').value;
 
@@ -107,7 +107,7 @@ function searchProducts(){
                         <span class="h5 text-warning">Seller : ${data[i].seller}</span>
                     </div>
                     <div class="mt-1 mb-2 text-muted small">
-                        <span class="h5 text-primary">Product Code : ${data[i].pcode}</span>
+                        <span class="h5 text-primary">Product Code : ${data[i].code}</span>
                     </div>
                     <p class="mb-4 mb-md-0 text-light mt-1">
                         No description yet...
@@ -121,7 +121,7 @@ function searchProducts(){
                     <h6 class="text-success"></h6>
                     <div class="d-flex flex-column mt-4">
                         <button class="btn btn-primary btn-lg" type="button">Details</button>
-                        <button onclick="addToCart(${data[i].id})" class="btn text-light  bg-success btn-lg mt-2" type="button">
+                        <button onclick="addToCart('${data[i].id}')" class="btn text-light  bg-success btn-lg mt-2" type="button">
                             Add to Cart
                         </button>
                     </div>

@@ -13,6 +13,7 @@ module.exports.getSellerProducts = async(_xsubtoken) => {
         let response = await axios.get(`${orionProxy}/v2/entities?options=keyValues&q=seller==${user.id}`,headers);
         return response.data;
     }catch(e){
+        console.log('Error @ Seller Product Fetching (all)')
         return null;
     }
 }
@@ -27,6 +28,7 @@ module.exports.getAllProducts = async() => {
         }
         return products;
     }catch(e){
+        console.log('Error @ Product Fetching (all)');
         return null;
     }
 }
@@ -37,6 +39,7 @@ module.exports.getProductByID = async( _pid) => {
         let product = response.data;
         return product;
     }catch(e){
+        console.log('Error @ Product Fetching');
         return null;
     }
 }
@@ -48,6 +51,7 @@ module.exports.getProduct = async(_xsubtoken, _pid) => {
         let product = response.data[0];
         return product;
     }catch(e){
+        console.log('Error @ Seller Product Fetching');
         return null;
     }
 }
@@ -84,6 +88,10 @@ module.exports.addProduct = async(_xsubtoken, _product) => {
             "photo":{
                 "value": _product.photo,
                 "type": "String"
+            },
+            "available":{
+                "value": _product.available,
+                "type": "Integer"
             }
         }
         let hash = crypto.createHash('md5').update(JSON.stringify(data)).digest("hex");
@@ -91,6 +99,7 @@ module.exports.addProduct = async(_xsubtoken, _product) => {
         axios.post(`${orionProxy}/v2/entities`,data,headers);
         return hash;
     }catch(e){
+        console.log('Error @ Product Insertion');
         return null;
     }
 }
@@ -100,6 +109,7 @@ module.exports.removeProduct = async(_id) =>{
         let response = await axios.delete(`${orionProxy}/v2/entities/${_id}`,headers);
         return true;
     }catch(e){
+        console.log('Error @ Product Deletion');
         return null;
     }
 }
@@ -130,11 +140,40 @@ module.exports.updateProduct = async(_product, _id) => {
             "photo":{
                 "value": _product.photo,
                 "type": "String"
+            },
+            "available":{
+                "value":_product.available,
+                "type": "Integer"
             }
         }
         await axios.patch(`${orionProxy}/v2/entities/${_id}/attrs`,data,headers);
         return true;
     }catch(e){
+        console.log('Error @ Product Update');
         return null;
     }
 }
+
+module.exports.filterProducts = async(_name,_seller,_cat,_plow,_phigh,_dlow,_dhigh) => {
+    try{
+        var dl = new Date(_dlow), dh = new Date(_dhigh);
+        let products = await this.getAllProducts();
+        if(_name!=="")
+            products = products.filter(a => (((a.name).toLowerCase()).match(`${(_name).toLowerCase()}`)!=null));
+        if(_seller!=="")
+            products = products.filter(a => (((a.seller).toLowerCase()).match(`${(_seller).toLowerCase()}`)!=null));
+        if(_cat!=="")
+            products = products.filter(a => (((a.category).toLowerCase()).match(`${(_cat).toLowerCase()}`)!=null));
+        if(isNumber(parseFloat(_plow)) && isNumber(parseFloat(_phigh)) && parseFloat(_plow) < parseFloat(_phigh))
+            products = products.filter(a => (a.price >= parseFloat(_plow) && a.price <= parseFloat(_phigh)));
+        if(dl < dh)
+            products = products.filter(a => new Date(a.dateofwithdrawl) >= dl && new Date(a.dateofwithdrawl) <= dh);
+        return products;    
+    }catch(e){
+        console.log('Error @ Product Filtering');
+        return null;
+    }
+}
+
+
+function isNumber(n) { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }

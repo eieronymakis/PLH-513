@@ -41,6 +41,10 @@ const postToOrion = async (elem, c) =>{
         "photo":{
             "value": elem.photo,
             "type": "String"
+        },
+        "available":{
+            "value": 1,
+            "type": "Integer"
         }
     }
     let hash = crypto.createHash('md5').update(JSON.stringify(data)).digest("hex");

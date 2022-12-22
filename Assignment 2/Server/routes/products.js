@@ -26,12 +26,6 @@ router
     });
 
 router
-    .route('/add')
-    .put(async (req,res) => {
-        
-    });
-
-router
     .route('/:pid/addtocart')
     .post(async (req, res) => {
         if(req.session.authenticated){
@@ -49,7 +43,15 @@ router
 router
     .route('/search')
     .get(async (req,res) => {
-       
+        let name = req.query.name;
+        let seller = req.query.seller;
+        let cat = req.query.category;
+        let pricelow = req.query.pricelow;
+        let pricehigh = req.query.pricehigh;
+        let datelow = req.query.datelow;
+        let datehigh = req.query.datehigh;
+        let result = await orion.filterProducts(name,seller,cat,pricelow,pricehigh,datelow,datehigh);
+        res.status(200).send(result).end();
     });
         
 

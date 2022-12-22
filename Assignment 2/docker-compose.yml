@@ -83,6 +83,8 @@ services:
             - mongo-db
         expose:
             - '1026'
+        ports:
+            - '1026:1026'
         command: -dbhost mongo-db
         networks:
           default:

@@ -17,9 +17,10 @@ function loadProducts(){
                 <td>${data[i].name}</td>
                 <td>${data[i].code}</td>
                 <td>${data[i].price}</td>
-                <td>${data[i].dateofwithdrawl}</td>
+                <td>${(data[i].dateofwithdrawl).split('T')[0]}</td>
                 <td>${data[i].category}</td>
                 <td>${data[i].photo}</td>
+                <td>${data[i].available}</td>
                 <td><button class="btn btn-success" onclick=showModal("${data[i].id}")>Change</button></td>
                 <td><button class="btn btn-danger" onclick=removeItem("${data[i].id}")>Delete</button></td>
             </tr>`
@@ -34,15 +35,16 @@ function removeItem(pid){
         'Content-Type': 'application/json',
     },
     })
+    .then((res)=>{
+        loadProducts();
+        $("#alert3").hide().show('medium');
+        setTimeout(function(){$("#alert3").hide()},2000)
+    })
     .catch((error) => {
         console.error('Error:', error);
     });
-    loadProducts();
-    $("#alert3").hide().show('medium');
-    setTimeout(function(){$("#alert3").hide()},2000)
+
 }
-
-
 
 function showModal(pid){
     var myModal = document.getElementById('staticBackdrop');
@@ -58,6 +60,7 @@ function showModal(pid){
         document.getElementById('modal_sname').value = data.seller;
         document.getElementById('modal_category').value = data.category;
         document.getElementById('modal_pphoto').value = data.photo;
+        document.getElementById('modal_available').value = data.available;
         modal.show();
     })
 }
@@ -76,7 +79,8 @@ function updateProduct(){
         price: document.getElementById('modal_price').value,
         dateofwithdrawl: document.getElementById('modal_dow').value,
         category: document.getElementById('modal_category').value,
-        photo : document.getElementById('modal_pphoto').value
+        photo : document.getElementById('modal_pphoto').value,
+        available: document.getElementById('modal_available').value
     };
     let pid = document.getElementById('modal_id').value;
     fetch(`http://127.0.0.1/seller/products/${pid}/update`, {
@@ -85,12 +89,15 @@ function updateProduct(){
         'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
+    }).then((res)=>{
+        $("#alert1").hide().show('medium');
+        setTimeout(function(){$("#alert1").hide()},2000);
+        loadProducts();
     })
     .catch((error) => {
         console.error('Error:', error);
     });
-    $("#alert1").hide().show('medium');
-    setTimeout(function(){$("#alert1").hide()},2000)
+
 }
 
 function addProduct(){
@@ -100,7 +107,8 @@ function addProduct(){
         price: document.getElementById('modal2_price').value,
         dateofwithdrawl: document.getElementById('modal2_dow').value,
         category: document.getElementById('modal2_category').value,
-        photo : document.getElementById('modal2_pphoto').value
+        photo : document.getElementById('modal2_pphoto').value,
+        available: document.getElementById('modal2_available').value
     };
     fetch(`http://127.0.0.1/seller/products/add`, {
     method: 'POST',
@@ -109,9 +117,13 @@ function addProduct(){
     },
     body: JSON.stringify(data),
     })
+    .then((res) => {
+        $("#alert4").hide().show('medium');
+        setTimeout(function(){$("#alert4").hide()},2000);
+        loadProducts();
+    })
     .catch((error) => {
         console.error('Error:', error);
     });
-    $("#alert4").hide().show('medium');
-    setTimeout(function(){$("#alert4").hide()},2000)
+
 }

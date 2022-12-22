@@ -45,7 +45,7 @@ function loadCart(){
                         <div class="col-md-2 d-flex justify-content-center">
                             <div>
                             <p class="small text-muted text-light mb-4 pb-2">Insertion Date</p>
-                            <p class="lead fw-normal text-light mb-0">${data[i].doi}</p>
+                            <p class="lead fw-normal text-light mb-0">${(data[i].doi).split('T')[0]}</p>
                             </div>
                         </div>
                         <div class="col-md-2 d-flex justify-content-center">

@@ -5,9 +5,13 @@ let keyrock = require('../tools/keyrock');
 router
     .route('/info')
     .get(async (req,res) => {
-        let user = await keyrock.getUser(req.session.xsubtoken);
-        let role = await keyrock.getUserRole(req.session.xsubtoken);
-        res.status(200).send({"id" : user.id, "username" : user.username, "role" : role.role_name}).end();
+        if(req.session.authenticated){
+            let user = await keyrock.getUser(req.session.xsubtoken);
+            let role = await keyrock.getUserRole(req.session.xsubtoken);
+            res.status(200).send({"id" : user.id, "username" : user.username, "role" : role.role_name}).end();
+        }else{
+            res.status(401).end();
+        }
     })
 
 router

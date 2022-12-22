@@ -113,6 +113,7 @@
                 <th scope="col">Date of Withdrawl</th>
                 <th scope="col">Category</th>
                 <th scope="col">Product Photo</th>
+                <th scope="col">Available</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
               </tr>
@@ -194,10 +195,18 @@
                         <input id="modal_pphoto" type="text"/>
                     </div>
                 </div>
+                <div class="modal-row mt-2">
+                    <div class="left">
+                        Available
+                    </div>
+                    <div class="right">
+                        <input id="modal_available" type="text"/>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="updateProduct();loadProducts();">Save Changes</button>
+            <button type="button" class="btn btn-primary" onclick="updateProduct();">Save Changes</button>
             </div>
         </div>
         </div>
@@ -259,10 +268,18 @@
                         <input id="modal2_pphoto" type="text"/>
                     </div>
                 </div>
+                <div class="modal-row mt-2">
+                    <div class="left">
+                        Available
+                    </div>
+                    <div class="right">
+                        <input id="modal2_available" type="text"/>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="addProduct();loadProducts();">Save Changes</button>
+            <button type="button" class="btn btn-primary" onclick="addProduct();">Save Changes</button>
             </div>
         </div>
         </div>
