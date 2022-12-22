@@ -25,4 +25,11 @@ router
         res.status(200).send(result).end();
     })
 
+router
+    .route('/delete/:sid')
+    .delete(async (req,res) =>{
+        let result = await mongoose.removeSubscription(req.params.sid);
+        res.status(200).end();
+    })
+
 module.exports = router;

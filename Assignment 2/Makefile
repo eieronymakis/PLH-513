@@ -10,3 +10,8 @@ stop:
 	sudo docker-compose stop
 start:
 	sudo docker-compose start
+clean:
+	sudo rm -rf ./Server/package-lock.json
+	sudo rm -rf ./Server/node_modules
+	sudo rm -rf ./DataStorageAPI/package-lock.json
+	sudo rm -rf ./DataStorageAPI/node_modules

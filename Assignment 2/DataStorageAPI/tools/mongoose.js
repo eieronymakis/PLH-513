@@ -18,16 +18,18 @@ const sub = mongoose.model('Subscriptions', subscriptionSchema);
 
 const notificationSchema = new mongoose.Schema({
     uid: {type: String, required:true},
+    sid: {type: String, required:true},
     message: {type: String, required:true}
 }, {collection: 'Notifications', versionKey: false});
 const notification = mongoose.model('Notifications',notificationSchema);
 
-module.exports.addNotification = (_d) => {
+module.exports.addNotification = async (_d) => {
     let _notif = new notification({
         uid: _d.uid,
+        sid: _d.sid,
         message: _d.message
     })
-    _notif.save(function(error, response){
+    await _notif.save(function(error, response){
         if(error){
             console.log("-------------------------------\n"+
                         "Error @ Notification Insertion\n"+
@@ -63,13 +65,25 @@ module.exports.getUserNotifications = async (_uid) => {
     }
 }
 
+module.exports.removeSubscription = async (_sid) => {
+    try{
+        let d = await sub.deleteOne({_id : _sid});
+        return true;
+    }catch(e){
+        console.log("-------------------------------\n"+
+                    "Error @ Subscription Deletion\n"+
+                    "-------------------------------");
+        return false;
+    }
+}
+
 module.exports.addSubscription = async (_s) => {
     let _sub = new sub({
         uid: _s.uid,
         sid: _s.sid,
         pid: _s.pid
     })
-    _sub.save(function(error, response){
+    await _sub.save(function(error, response){
         if(error){
             console.log("-------------------------------\n"+
                         "Error @ Subscription Insertion\n"+
@@ -112,7 +126,7 @@ module.exports.addCart = async (_d) => {
         pid: _d.pid,
         doi: Date.now()
     });
-    _cart.save(function(error,response){
+    await _cart.save(function(error,response){
         if(error){
             console.log("-------------------------------\n"+
                         "Error @ Cart Insertion\n"+

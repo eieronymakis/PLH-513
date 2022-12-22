@@ -7,8 +7,10 @@ const dataStorage = require('../tools/dataStorage');
 router
     .route('/webhook')
     .post(async (req,res) => {
-        console.log("hit");
-        console.log(req.body);
+        let sid = req.body.subscriptionId;
+        let sub = await dataStorage.getSubscriptionById(sid);
+        let uid = sub.uid;
+        let result = await dataStorage.addNotification({uid : uid, sid: sid, message : "Product Changed"});
         res.status(204).send();
     })
 
@@ -36,10 +38,25 @@ router
     })
 
 router
+    .route('/delete/:sid')
+    .delete(async (req,res) => {
+        let result = await dataStorage.removeSubscription(req.params.sid);
+        res.status(200).end();
+    })
+ 
+router
     .route('/view')
     .get(async (req,res) => {
         let user = await keyrock.getUser(req.session.xsubtoken);
         let result = await dataStorage.getUserSubscriptions(user.id);
+        res.status(200).send(result).end();
+    })
+
+router
+    .route('/notifications')
+    .get(async (req,res) => {
+        let user = await keyrock.getUser(req.session.xsubtoken);
+        let result = await dataStorage.getUserNotifications(user.id);
         res.status(200).send(result).end();
     })
 

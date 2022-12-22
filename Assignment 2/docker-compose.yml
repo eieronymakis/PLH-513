@@ -56,23 +56,23 @@ services:
           default:
             ipv4_address: 172.18.1.7
     #-------------------------------------------------
-    # server:
-    #    restart: always
-    #    build: ./Server
-    #    image: node-server:latest
-    #    container_name: node-server
-    #    command: node server.js
-    #    volumes:
-    #         - ./Server:/server
-    #         - /server/node_modules
-    #    ports:
-    #         - '80:80'
-    #    depends_on:
-    #         - mysql-db
-    #         - mongo-db
-    #    networks:
-    #       default:
-    #         ipv4_address: 172.18.1.8
+    server:
+       restart: always
+       build: ./Server
+       image: node-server:latest
+       container_name: node-server
+       command: node server.js
+       volumes:
+            - ./Server:/server
+            - /server/node_modules
+       ports:
+            - '80:80'
+       depends_on:
+            - mysql-db
+            - mongo-db
+       networks:
+          default:
+            ipv4_address: 172.18.1.8
     #-------------------------------------------------
     orion:
         image: fiware/orion
