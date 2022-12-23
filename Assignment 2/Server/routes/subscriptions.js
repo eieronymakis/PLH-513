@@ -10,8 +10,24 @@ router
         let sid = req.body.subscriptionId;
         let sub = await dataStorage.getSubscriptionById(sid);
         let uid = sub.uid;
-        let result = await dataStorage.addNotification({uid : uid, sid: sid, message : "Product Changed"});
+        let pid = sub.pid;
+        let product = await orion.getProductByID(pid);
+        let product_name = product.name;
+        let available = req.body.data[0].available;
+        let message;
+        if(available == 0)
+            message = `Product ${product_name} is sold out ! You will get notified when it's back in stock.`;
+        else
+            message = `Product ${product_name} is in stock !`;
+        let result = await dataStorage.addNotification({uid : uid, sid: sid, message : message});
         res.status(204).send();
+    })
+
+router
+    .route('/notifications/delete/:nid')
+    .delete(async (req, res) => {
+        let result = await dataStorage.removeNotification(req.params.nid);
+        res.status(200).end();
     })
 
 router
@@ -38,9 +54,10 @@ router
     })
 
 router
-    .route('/delete/:sid')
+    .route('/delete')
     .delete(async (req,res) => {
-        let result = await dataStorage.removeSubscription(req.params.sid);
+        let r = await dataStorage.removeSubscription(req.query.dssid);
+        let r2 = await orion.removeSubscription(req.query.osid);
         res.status(200).end();
     })
  

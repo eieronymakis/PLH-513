@@ -15,3 +15,5 @@ clean:
 	sudo rm -rf ./Server/node_modules
 	sudo rm -rf ./DataStorageAPI/package-lock.json
 	sudo rm -rf ./DataStorageAPI/node_modules
+idm:
+	sudo docker exec -i $(id) mysql -uroot -psecret idm < ./idm.sql 

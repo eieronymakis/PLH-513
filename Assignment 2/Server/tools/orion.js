@@ -35,10 +35,20 @@ module.exports.addSubscription = async (_d) => {
                 "notification": {
                   "http": {
                     "url": "http://172.18.1.8:80/subscriptions/webhook"
-                  }
+                  },
+                  "attrsFormat" : "keyValues"
                 }
         }
         await axios.post(`${orionProxy}/v2/subscriptions`, data, headers);
+        return true;
+    }catch(e){
+        return false;
+    }
+}
+
+module.exports.removeSubscription = async (_sid) => {
+    try{
+        await axios.delete(`${orionProxy}/v2/subscriptions/${_sid}`, headers);
         return true;
     }catch(e){
         return false;

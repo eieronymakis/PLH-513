@@ -6,7 +6,16 @@ const keyrock = require('../tools/keyrock');
 router
     .route('/')
     .get(async (req,res) => {
-        res.render('seller');
+        if(req.session.authenticated){
+            let user = await keyrock.getUserRole(req.session.xsubtoken);
+            if(user.role_name === "ProductSeller"){
+                res.render('seller');
+            }else{
+                res.redirect('/forbidden');
+            }
+        }else{
+            res.redirect('/login');
+        }
     })
 
 router

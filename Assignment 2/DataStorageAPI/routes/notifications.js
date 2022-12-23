@@ -20,7 +20,8 @@ router
 router
     .route('/delete/:nid')
     .delete(async (req,res) =>{
-        let result = await monoogse.removeNotification(req.params.nid);
+        console.log(req.params.nid);
+        let result = await mongoose.removeNotification(req.params.nid);
         res.status(200).end();
     })
 

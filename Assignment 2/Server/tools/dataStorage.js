@@ -4,6 +4,16 @@ const orion = require('./orion');
 const dataStorageProxy = 'http://172.18.1.12:3001';
 const headers ={headers:{'X-Auth-Token': process.env.DATA_STORAGE_PROXY_KEY}};
 
+module.exports.removeNotification = async (_nid) => {
+    try{
+        await axios.delete(`${dataStorageProxy}/notifications/delete/${_nid}`,headers);
+        return true;
+    }catch(e){
+        console.log('Server : Error @ Notification Deletion');
+        return false;
+    }
+}
+
 module.exports.addNotification = async (_d) => {
     try{
         await axios.post(`${dataStorageProxy}/notifications/add`,{uid: _d.uid, sid : _d.sid, message : _d.message},headers);

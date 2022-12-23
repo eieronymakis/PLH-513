@@ -43,7 +43,7 @@ module.exports.addNotification = async (_d) => {
 
 module.exports.removeNotification = async (_nid) => {
     try{
-        let d = await cart.deleteOne({_id: _nid});
+        let d = await notification.deleteOne({_id: _nid});
         return true;
     }catch(e){
         console.log("-------------------------------\n"+

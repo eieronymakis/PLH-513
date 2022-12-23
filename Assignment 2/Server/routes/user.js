@@ -17,35 +17,65 @@ router
 router
     .route('/all')
     .get(async (req,res) => {
-       let u =  await keyrock.getAppUsers();
-       res.status(200).send(u).end();
+        if(req.session.authenticated){
+            let user = await keyrock.getUserRole(req.session.xsubtoken);
+            if(user.role_name === "Admin" || user.role_name === "admin" || user.role_name === "Provider"){
+                let u =  await keyrock.getAppUsers();
+                res.status(200).send(u).end();
+            }else{
+                res.status(401).end();
+            }
+        }else{
+            res.status(401).end();
+        }
     })
 
 router
     .route('/info/:id')
     .get(async (req,res) => {
-        let u = await keyrock.getAppUser(req.params.id);
-        res.status(200).send(u).end();
+        if(req.session.authenticated){
+            let user = await keyrock.getUserRole(req.session.xsubtoken);
+            if(user.role_name === "Admin" || user.role_name === "admin" || user.role_name === "Provider"){
+                let u = await keyrock.getAppUser(req.params.id);
+                res.status(200).send(u).end();
+            }else{
+                res.status(401).end();
+            }
+        }else{
+            res.status(401).end();
+        }
     })
 
 router
     .route('/update/:id')
     .patch(async (req,res) => {
-        let r = await keyrock.updateUser(req.params.id, req.body.username);
-        res.status(200).end();
+        if(req.session.authenticated){
+            let user = await keyrock.getUserRole(req.session.xsubtoken);
+            if(user.role_name === "Admin" || user.role_name === "admin" || user.role_name === "Provider"){
+                let r = await keyrock.updateUser(req.params.id, req.body.username);
+                res.status(200).end();
+            }else{
+                res.status(401).end();
+            }
+        }else{
+            res.status(401).end();
+        }
     })
-
-// router
-//     .route('/confirm')
-//     .post(async (req,res) => {
-       
-//     })
 
 router
     .route('/delete/:id')
     .delete(async (req,res) => {
-        await keyrock.deleteUser(req.params.id);
-        res.status(200).end();
+        if(req.session.authenticated){
+            let user = await keyrock.getUserRole(req.session.xsubtoken);
+            if(user.role_name === "Admin" || user.role_name === "admin" || user.role_name === "Provider"){
+                await keyrock.deleteUser(req.params.id);
+                res.status(200).end();
+            }else{
+                res.status(401).end();
+            }
+        }else{
+            res.status(401).end();
+        }
     })
 
 module.exports = router;

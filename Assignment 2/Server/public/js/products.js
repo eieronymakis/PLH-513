@@ -43,8 +43,11 @@ function loadProducts(){
                         <span class="text-danger"><s></s></span>
                     </div>
                     <h6 class="text-success"></h6>
-                    <div class="d-flex flex-column mt-4">
-                        <button class="btn btn-primary btn-lg" type="button">Details</button>
+                    <div class="d-flex flex-column mt-4">   
+                        ${!data[i].subscribed ? 
+                            `<button onclick="subscribe('${data[i].id}')" class="btn btn-primary btn-lg" type="button">Subscribe</button>` :                        
+                            `<button onclick="unsubscribe('${data[i].subID}','${data[i].dsSubID}')" class="btn btn-warning btn-lg text-light" type="button">Unsubscribe</button>`
+                        }
                         <button onclick="addToCart('${data[i].id}')" class="btn text-light  bg-success btn-lg mt-2" type="button">
                             Add to Cart
                         </button>
@@ -120,7 +123,10 @@ function searchProducts(){
                     </div>
                     <h6 class="text-success"></h6>
                     <div class="d-flex flex-column mt-4">
-                        <button class="btn btn-primary btn-lg" type="button">Details</button>
+                        ${!data[i].subscribed ? 
+                            `<button onclick="subscribe('${data[i].id}')" class="btn btn-primary btn-lg" type="button">Subscribe</button>` :                        
+                            `<button onclick="unsubscribe('${data[i].subID}','${data[i].dsSubID}')" class="btn btn-warning btn-lg text-light" type="button">Unsubscribe</button>`
+                        }
                         <button onclick="addToCart('${data[i].id}')" class="btn text-light  bg-success btn-lg mt-2" type="button">
                             Add to Cart
                         </button>
@@ -142,4 +148,39 @@ function clearSearch(){
     document.getElementById('pricehigh').value = '';
     document.getElementById('datelow').value = '';
     document.getElementById('datehigh').value = '';
+}
+
+function subscribe(_pid){
+    const data = { pid: _pid };
+    fetch('http://127.0.0.1/subscriptions/add', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+    })
+    .then((response) => {
+        if(response.status == 409)
+            console.log('Already Subscribed');
+    })
+    .then((data) => {
+        loadProducts();
+        $("#alert2").hide().show('medium');
+        setTimeout(function(){$("#alert2").hide()},2000)
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+function unsubscribe(_subID, _dsSubID){
+    fetch(`http://127.0.0.1/subscriptions/delete?dssid=${_dsSubID}&osid=${_subID}`, {method:'DELETE'})
+    .then((res) =>{
+        loadProducts();
+        $("#alert3").hide().show('medium');
+        setTimeout(function(){$("#alert3").hide()},2000)
+    })
+    .catch((err) =>{
+        console.log('Error : ',err);
+    })
 }
