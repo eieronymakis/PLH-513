@@ -1,8 +1,19 @@
 Dev Guide
 -------------------------------------------------------------------------------------------------------------------------
-1. sudo docker-compose up
+1. sudo docker-compose up -d
 2. sudo docker ps -> Get mysql container ID
-3. sudo docker exec -i [mysql_container_id] mysql -uroot -psecret idm < ./idm.sql (after you load the backup both proxies should be up)
-4. Navigate to /Server/tools and run "node ./orion-setup-products.js" in order to import predefined products to Orion (product data are stored inside sample-products.json in the same folder)
+3. make idm id={mysql_container_id} (id from step 2, to load the keyrock backup)
+4. sudo docker ps -> Get node-server container ID
+5. make bash id={node-server_container_id} (to use bash inside node container)
+6. Inside the container navigate to /server/tools/
+7. Run node orion-setup-products.js (To load product backup to orion)
 5. All done, application is ready!
 -------------------------------------------------------------------------------------------------------------------------
+Users
+-------------------------------------------------------------------------------------------------------------------------
+
+| Username  | Password | Role |
+| ------------- | ------------- | ------------- |
+| admin@test.com  | 1111  | Admin/Provider |
+| productseller@test.com | 1111 | ProductSeller |
+| user@test.com | 1111 | User |
