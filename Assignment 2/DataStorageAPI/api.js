@@ -14,7 +14,7 @@ app.use('/notifications', require('./routes/notifications'));
 app.get('/', (req, res) => {
     res.status(200).send({
         Message:"Welcome to Data Storage API",
-        Author:"Emmanouil-Georgios Ieronymakis"
+        Author:"EGI"
     }).end();
 })
 

@@ -1,4 +1,7 @@
-fetch('http://127.0.0.1/user/info')
+
+let url = 'http://35.226.48.88';
+
+fetch(`${url}/user/info`)
   .then((response) => response.json())
   .then((data) => {
     document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
@@ -6,7 +9,7 @@ fetch('http://127.0.0.1/user/info')
   
 function loadProducts(){
     let table = document.getElementById('tablebody');
-    fetch('http://127.0.0.1/seller/products')
+    fetch(`${url}/seller/products`)
     .then((response) => response.json())
     .then((data) => {
         table.innerHTML = '';
@@ -29,7 +32,7 @@ function loadProducts(){
 }
 
 function removeItem(pid){
-    fetch(`http://127.0.0.1/seller/products/${pid}/delete`, {
+    fetch(`${url}/seller/products/${pid}/delete`, {
     method: 'DELETE',
     headers: {
         'Content-Type': 'application/json',
@@ -49,7 +52,7 @@ function removeItem(pid){
 function showModal(pid){
     var myModal = document.getElementById('staticBackdrop');
     var modal = bootstrap.Modal.getOrCreateInstance(myModal);
-    fetch(`http://127.0.0.1/seller/products/${pid}/info`)
+    fetch(`${url}/seller/products/${pid}/info`)
     .then((response) => response.json())
     .then((data) => {
         document.getElementById('modal_id').value = data.id
@@ -83,7 +86,7 @@ function updateProduct(){
         available: document.getElementById('modal_available').value
     };
     let pid = document.getElementById('modal_id').value;
-    fetch(`http://127.0.0.1/seller/products/${pid}/update`, {
+    fetch(`${url}/seller/products/${pid}/update`, {
     method: 'post',
     headers: {
         'Content-Type': 'application/json',
@@ -110,7 +113,7 @@ function addProduct(){
         photo : document.getElementById('modal2_pphoto').value,
         available: document.getElementById('modal2_available').value
     };
-    fetch(`http://127.0.0.1/seller/products/add`, {
+    fetch(`${url}/seller/products/add`, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',

@@ -1,4 +1,7 @@
-fetch('http://127.0.0.1/user/info')
+let url = 'http://35.226.48.88';
+
+
+fetch(`${url}/user/info`)
   .then((response) => response.json())
   .then((data) => {
     document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
@@ -6,7 +9,7 @@ fetch('http://127.0.0.1/user/info')
 
 function loadUsers(){
     let table = document.getElementById('tablebody');
-    fetch('http://127.0.0.1/user/all')
+    fetch(`${url}/user/all`)
     .then((response) => response.json())
     .then((data) => {
         table.innerHTML = '';
@@ -29,7 +32,7 @@ function loadUsers(){
 function showModal(userid){
     var myModal = document.getElementById('staticBackdrop');
     var modal = bootstrap.Modal.getOrCreateInstance(myModal)
-    fetch(`http://127.0.0.1/user/info/${userid}`)
+    fetch(`${url}/user/info/${userid}`)
     .then((response) => response.json())
     .then((data) => {
         document.getElementById('modal_id').value = data.user_id
@@ -60,7 +63,7 @@ function showModal(userid){
 // }
 
 function deleteUser(userID){
-    fetch(`http://127.0.0.1/user/delete/${userID}`, {
+    fetch(`${url}/user/delete/${userID}`, {
     method: 'DELETE',
     headers: {
         'Content-Type': 'application/json',
@@ -82,7 +85,7 @@ function updateUser(userID){
         "username": document.getElementById('modal_username').value
     };
 
-    fetch(`http://127.0.0.1/user/update/${userID}`, {
+    fetch(`${url}/user/update/${userID}`, {
     method: 'PATCH',
     headers: {
         'Content-Type': 'application/json',

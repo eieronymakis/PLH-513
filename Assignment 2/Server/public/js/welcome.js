@@ -1,10 +1,12 @@
-fetch('http://127.0.0.1/user/info')
+let url = 'http://35.226.48.88';
+
+fetch(`${url}/user/info`)
   .then((response) => response.json())
   .then((data) => {
     document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
   });
 
-fetch('http://127.0.0.1/subscriptions/notifications')
+fetch(`${url}/subscriptions/notifications`)
   .then((response) => response.json())
   .then((data) => {
     if(data.length > 0){
@@ -20,7 +22,7 @@ fetch('http://127.0.0.1/subscriptions/notifications')
   })
 
 function removeNotification(nid){
-  fetch(`http://127.0.0.1/subscriptions/notifications/delete/${nid}`, { method: 'DELETE' })
+  fetch(`${url}/subscriptions/notifications/delete/${nid}`, { method: 'DELETE' })
 }
 
 

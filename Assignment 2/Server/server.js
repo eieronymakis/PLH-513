@@ -47,6 +47,7 @@ app.use('/administration', require('./routes/administration'));
 app.use('/cart', require('./routes/cart'));
 app.use('/seller', require('./routes/seller'));
 app.use('/subscriptions', require('./routes/subscriptions'));
+app.use('/keyrock', require('./routes/keyrock'));
 
 app.get('/', (req,res) => {
     res.redirect('/login');

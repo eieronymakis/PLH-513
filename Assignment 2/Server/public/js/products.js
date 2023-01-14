@@ -1,4 +1,6 @@
-fetch('http://127.0.0.1/user/info')
+let url = 'http://35.226.48.88';
+
+fetch(`${url}/user/info`)
   .then((response) => response.json())
   .then((data) => {
     document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
@@ -7,7 +9,7 @@ fetch('http://127.0.0.1/user/info')
 let p_container = document.getElementById('product_container');
 
 function loadProducts(){
-    fetch('http://127.0.0.1/products/all')
+    fetch(`${url}/products/all`)
     .then((response) => response.json())
     .then((data) => {
     p_container.innerHTML = '';
@@ -62,7 +64,7 @@ function loadProducts(){
 }
 
 function addToCart(id){
-    fetch(`http://127.0.0.1/products/${id}/addtocart`, {method: 'POST'})
+    fetch(`${url}/products/${id}/addtocart`, {method: 'POST'})
     .then((response)=>{
         $("#alert1").hide().show('medium');
         setTimeout(function(){$("#alert1").hide()},2000)
@@ -86,7 +88,7 @@ function searchProducts(){
     pricelow = pricelow.length === 0 ? `${Number.MIN_SAFE_INTEGER}` : pricelow;
     pricehigh = pricehigh.length === 0 ? `${Number.MAX_SAFE_INTEGER}` : pricehigh; 
 
-    fetch(`http://127.0.0.1/products/search?name=${name}&seller=${seller}&category=${category}&pricelow=${pricelow}&pricehigh=${pricehigh}&datelow=${datelow}&datehigh=${datehigh}`)
+    fetch(`${url}/products/search?name=${name}&seller=${seller}&category=${category}&pricelow=${pricelow}&pricehigh=${pricehigh}&datelow=${datelow}&datehigh=${datehigh}`)
     .then((response) => response.json())
     .then((data) => {
         p_container.innerHTML = '';
@@ -152,7 +154,7 @@ function clearSearch(){
 
 function subscribe(_pid){
     const data = { pid: _pid };
-    fetch('http://127.0.0.1/subscriptions/add', {
+    fetch(`${url}/subscriptions/add`, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
@@ -174,7 +176,7 @@ function subscribe(_pid){
 }
 
 function unsubscribe(_subID, _dsSubID){
-    fetch(`http://127.0.0.1/subscriptions/delete?dssid=${_dsSubID}&osid=${_subID}`, {method:'DELETE'})
+    fetch(`${url}/subscriptions/delete?dssid=${_dsSubID}&osid=${_subID}`, {method:'DELETE'})
     .then((res) =>{
         loadProducts();
         $("#alert3").hide().show('medium');

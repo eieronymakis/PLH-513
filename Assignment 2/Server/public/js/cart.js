@@ -1,4 +1,7 @@
-fetch('http://127.0.0.1/user/info')
+
+let url = 'http://35.226.48.88';
+
+fetch(`${url}/user/info`)
   .then((response) => response.json())
   .then((data) => {
     document.getElementById("username").innerHTML = data.username.toLowerCase()+` (${data.role})`;
@@ -9,7 +12,7 @@ let cart_count = document.getElementById('cart_item_count');
 let cart_cost = document.getElementById('total_cost');
 
 function loadCart(){
-    fetch('http://127.0.0.1/cart/items')
+    fetch(`${url}/cart/items`)
     .then((response) => response.json())
     .then((data) => {
         p_container.innerHTML = '';
@@ -65,7 +68,7 @@ function loadCart(){
 }
 
 function removeItem(id){
-    fetch(`http://127.0.0.1/cart/items/${id}/remove`, {
+    fetch(`${url}/cart/items/${id}/remove`, {
     method: 'DELETE',
     headers: {
         'Content-Type': 'application/json',

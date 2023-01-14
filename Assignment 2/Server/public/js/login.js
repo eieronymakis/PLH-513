@@ -1,3 +1,5 @@
+let url = 'http://35.226.48.88';
+
 function authenticate(){
     let name = document.getElementById('uname_input').value;
     let password = document.getElementById('pass_input').value;
@@ -5,7 +7,7 @@ function authenticate(){
         name: name,
         password: password
     };
-    fetch('http://127.0.0.1/auth', {
+    fetch(`${url}/auth`, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
@@ -15,7 +17,7 @@ function authenticate(){
     .then((response) => response.json())
     .then((data) => {
         if(data.authentication){
-            window.location.replace("http://127.0.0.1/welcome")
+            window.location.replace(`${url}/welcome`)
         }else{
             document.getElementById('error').innerHTML=data.message;
             document.getElementById('error').classList.remove('invisible');
